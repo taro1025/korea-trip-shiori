@@ -14,6 +14,23 @@ function mapUrl(item) {
   return `https://www.google.com/maps/dir/?${params.toString()}`;
 }
 
+function dayRouteUrl(day) {
+  const stops = routeStops(day.events);
+  const params = new URLSearchParams({
+    api: "1",
+    origin: stops[0],
+    destination: stops[stops.length - 1],
+  });
+  const waypoints = stops.slice(1, -1).join("|");
+  if (waypoints) params.set("waypoints", waypoints);
+  return `https://www.google.com/maps/dir/?${params.toString()}`;
+}
+
+function routeStops(events) {
+  const stops = events.flatMap((item) => [item.from, item.to].filter(Boolean));
+  return stops.filter((stop, index) => stop !== stops[index - 1]);
+}
+
 function encode(value) {
   return encodeURIComponent(value);
 }
@@ -40,6 +57,7 @@ function showDay(dayId) {
   $("#dayDate").textContent = day.date;
   $("#dayTitle").textContent = day.title;
   $("#dayTheme").textContent = day.theme;
+  $("#dayRouteLink").href = dayRouteUrl(day);
   renderNotes(day.notes);
   renderTimeline(day.events);
   updateTabs(day.id);

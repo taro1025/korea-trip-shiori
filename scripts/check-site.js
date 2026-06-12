@@ -42,6 +42,7 @@ function checkContent() {
   const html = read("index.html");
   assert(html.includes("韓国男旅のしおり"), "タイトルがありません");
   assert(html.includes("dayTabs"), "日別タブがありません");
+  assert(html.includes("dayRouteLink"), "日別経路リンクがありません");
 }
 
 function checkImage() {
@@ -59,11 +60,21 @@ function checkRoutes(events) {
   events.forEach((event) => assert(event.from, `${event.title} の場所がありません`));
 }
 
+function checkDayRoutes(days) {
+  days.forEach((day) => assert(routeStops(day.events).length > 1, `${day.date} の経路が不足`));
+}
+
+function routeStops(events) {
+  const stops = events.flatMap((item) => [item.from, item.to].filter(Boolean));
+  return stops.filter((stop, index) => stop !== stops[index - 1]);
+}
+
 function checkData() {
   const trip = loadTripData();
   assert(trip.days.length === 5, "5日分の日程がありません");
   trip.days.forEach((day) => checkQuarterHours(day.events));
   trip.days.forEach((day) => checkRoutes(day.events));
+  checkDayRoutes(trip.days);
 }
 
 function run() {

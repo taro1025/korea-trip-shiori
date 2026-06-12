@@ -232,6 +232,19 @@ a {
   line-height: 1.75;
 }
 
+.day-route-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 0.72rem 0.9rem;
+  background: var(--teal);
+  color: #fff;
+  font-weight: 900;
+  text-decoration: none;
+}
+
 .day-panel ul {
   display: grid;
   gap: 8px;
