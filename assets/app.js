@@ -5,22 +5,17 @@ function mapUrl(item) {
   if (!item.to) {
     return `https://www.google.com/maps/search/?api=1&query=${encode(item.from)}`;
   }
-  const path = [item.from, item.to].map(placeSegment).join("/");
-  return `https://www.google.com/maps/dir/${path}/?travelmode=${item.mode}`;
+  return directionUrl(item.from, item.to, item.mode);
 }
 
-function dayRouteUrl(day) {
-  const stops = routeStops(day.events);
-  return `https://www.google.com/maps/dir/${stops.map(placeSegment).join("/")}/`;
-}
-
-function routeStops(events) {
-  const stops = events.flatMap((item) => [item.from, item.to].filter(Boolean));
-  return stops.filter((stop, index) => stop !== stops[index - 1]);
-}
-
-function placeSegment(value) {
-  return encodeURIComponent(value).replaceAll("%20", "+");
+function directionUrl(origin, destination, mode) {
+  const params = new URLSearchParams({
+    api: "1",
+    origin,
+    destination,
+    travelmode: mode,
+  });
+  return `https://www.google.com/maps/dir/?${params.toString()}`;
 }
 
 function encode(value) {
@@ -49,7 +44,7 @@ function showDay(dayId) {
   $("#dayDate").textContent = day.date;
   $("#dayTitle").textContent = day.title;
   $("#dayTheme").textContent = day.theme;
-  $("#dayRouteLink").href = dayRouteUrl(day);
+  renderDayRoutes(day.events);
   renderNotes(day.notes);
   renderTimeline(day.events);
   renderDayExtra(day.friendRoutes || []);
@@ -93,6 +88,34 @@ function timelineHtml(item) {
 
 function routeLink(item) {
   return `<a class="route-link" href="${mapUrl(item)}" target="_blank" rel="noreferrer">Google Mapsで見る</a>`;
+}
+
+function renderDayRoutes(events) {
+  const routes = events.filter((item) => item.to);
+  const list = $("#dayRouteList");
+  list.innerHTML = "";
+  routes.forEach((item) => list.appendChild(dayRouteItem(item)));
+}
+
+function dayRouteItem(item) {
+  const link = document.createElement("a");
+  link.href = mapUrl(item);
+  link.target = "_blank";
+  link.rel = "noreferrer";
+  link.innerHTML = `<strong>${item.time} ${routeName(item)}</strong><span>${item.move || modeLabel(item.mode)}</span>`;
+  return link;
+}
+
+function routeName(item) {
+  return `${shortPlace(item.from)} → ${shortPlace(item.to)}`;
+}
+
+function shortPlace(place) {
+  return place.split(",")[0];
+}
+
+function modeLabel(mode) {
+  return { driving: "車で移動", transit: "電車で移動", walking: "徒歩で移動" }[mode] || "移動";
 }
 
 function renderDayExtra(routes) {
