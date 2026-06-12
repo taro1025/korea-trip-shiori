@@ -1,0 +1,8 @@
+{
+  "name": "korea-trip-shiori",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node --check assets/itinerary.js && node --check assets/app.js && node scripts/check-site.js"
+  }
+}

@@ -1,0 +1,419 @@
+:root {
+  --bg: #f4f6f8;
+  --ink: #17191c;
+  --muted: #5f6672;
+  --surface: #ffffff;
+  --line: #dde3ea;
+  --red: #d2473f;
+  --red-dark: #9f2924;
+  --teal: #007c89;
+  --teal-soft: #dff3f3;
+  --gold: #f0b74a;
+  --night: #11151d;
+  --shadow: 0 18px 55px rgba(20, 24, 31, 0.13);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+a {
+  color: inherit;
+}
+
+.hero {
+  display: flex;
+  min-height: 78svh;
+  flex-direction: column;
+  background:
+    linear-gradient(90deg, rgba(13, 17, 23, 0.82), rgba(13, 17, 23, 0.34)),
+    url("seoul-night.jpg") center / cover;
+  color: #fff;
+}
+
+.nav {
+  display: flex;
+  width: min(1120px, calc(100% - 32px));
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 auto;
+  padding: 18px 0;
+}
+
+.nav__brand {
+  font-size: 1.02rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.nav__links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav__links a {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  padding: 0.55rem 0.78rem;
+  background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.hero__body {
+  width: min(1120px, calc(100% - 32px));
+  margin: auto auto 9vh;
+}
+
+.eyebrow,
+.panel__label {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: var(--gold);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: 3.25rem;
+  line-height: 1.08;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: 1.1rem 0 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border-radius: 8px;
+  padding: 0.78rem 1.05rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.button--primary {
+  background: var(--red);
+}
+
+.button--ghost {
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.section {
+  padding: 54px 0;
+}
+
+.section--alt {
+  background: #eaf0f2;
+}
+
+.section__inner {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.overview {
+  padding-top: 32px;
+}
+
+.overview__grid,
+.prep-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.panel,
+.day-panel,
+.friend-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.panel {
+  padding: 24px;
+}
+
+.panel h2,
+.section-heading h2 {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+.panel p {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.small {
+  font-size: 0.92rem;
+}
+
+.section-heading {
+  margin-bottom: 18px;
+}
+
+.day-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.day-tab {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.62rem 0.86rem;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.day-tab[aria-selected="true"] {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+  color: #003f45;
+}
+
+.day-panel {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.82fr) minmax(0, 1.18fr);
+  gap: 26px;
+  padding: 26px;
+}
+
+.day-panel__summary span {
+  color: var(--red-dark);
+  font-weight: 900;
+}
+
+.day-panel h3 {
+  margin: 0.25rem 0 0.8rem;
+  font-size: 1.75rem;
+}
+
+.day-panel p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.day-panel ul {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.day-panel ul li {
+  border-left: 4px solid var(--gold);
+  padding-left: 10px;
+  color: var(--muted);
+  font-weight: 750;
+}
+
+.timeline {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 14px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
+
+.timeline time,
+.friend-card time {
+  color: var(--teal);
+  font-weight: 950;
+}
+
+.timeline h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.timeline p {
+  margin: 0.28rem 0 0;
+}
+
+.move {
+  display: inline-flex;
+  margin-top: 0.42rem;
+  border-radius: 8px;
+  background: #f4ead6;
+  padding: 0.25rem 0.48rem;
+  color: #694300;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.route-link {
+  display: inline-flex;
+  margin-top: 0.48rem;
+  color: var(--red-dark);
+  font-weight: 900;
+}
+
+.friend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.friend-card {
+  padding: 24px;
+}
+
+.friend-card h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.friend-card p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.friend-card ol {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.friend-card li {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.friend-card strong,
+.friend-card span {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.friend-card span {
+  color: #694300;
+  font-weight: 850;
+}
+
+.check-list,
+.todo-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check-list li,
+.todo-list li {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  background: #fbfcff;
+  font-weight: 800;
+}
+
+.footer {
+  display: flex;
+  width: min(1120px, calc(100% - 32px));
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 auto;
+  padding: 26px 0 42px;
+  color: var(--muted);
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer a {
+  font-weight: 900;
+}
+
+@media (max-width: 820px) {
+  .nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav__links {
+    width: 100%;
+  }
+
+  .nav__links a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+  }
+
+  .overview__grid,
+  .prep-grid,
+  .day-panel,
+  .friend-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 40px 0;
+  }
+
+  .panel,
+  .day-panel,
+  .friend-card {
+    padding: 20px;
+  }
+
+  .timeline li {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+}
