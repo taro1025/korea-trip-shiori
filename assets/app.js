@@ -5,30 +5,22 @@ function mapUrl(item) {
   if (!item.to) {
     return `https://www.google.com/maps/search/?api=1&query=${encode(item.from)}`;
   }
-  const params = new URLSearchParams({
-    api: "1",
-    origin: item.from,
-    destination: item.to,
-    travelmode: item.mode,
-  });
-  return `https://www.google.com/maps/dir/?${params.toString()}`;
+  const path = [item.from, item.to].map(placeSegment).join("/");
+  return `https://www.google.com/maps/dir/${path}/?travelmode=${item.mode}`;
 }
 
 function dayRouteUrl(day) {
   const stops = routeStops(day.events);
-  const params = new URLSearchParams({
-    api: "1",
-    origin: stops[0],
-    destination: stops[stops.length - 1],
-  });
-  const waypoints = stops.slice(1, -1).join("|");
-  if (waypoints) params.set("waypoints", waypoints);
-  return `https://www.google.com/maps/dir/?${params.toString()}`;
+  return `https://www.google.com/maps/dir/${stops.map(placeSegment).join("/")}/`;
 }
 
 function routeStops(events) {
   const stops = events.flatMap((item) => [item.from, item.to].filter(Boolean));
   return stops.filter((stop, index) => stop !== stops[index - 1]);
+}
+
+function placeSegment(value) {
+  return encodeURIComponent(value).replaceAll("%20", "+");
 }
 
 function encode(value) {
@@ -60,6 +52,7 @@ function showDay(dayId) {
   $("#dayRouteLink").href = dayRouteUrl(day);
   renderNotes(day.notes);
   renderTimeline(day.events);
+  renderDayExtra(day.friendRoutes || []);
   updateTabs(day.id);
 }
 
@@ -102,10 +95,20 @@ function routeLink(item) {
   return `<a class="route-link" href="${mapUrl(item)}" target="_blank" rel="noreferrer">Google Mapsで見る</a>`;
 }
 
-function renderFriendRoutes() {
-  const grid = $("#friendRoutes");
-  grid.innerHTML = "";
-  data.friendRoutes.forEach((route) => grid.appendChild(friendCard(route)));
+function renderDayExtra(routes) {
+  const extra = $("#dayExtra");
+  extra.hidden = routes.length === 0;
+  extra.innerHTML = "";
+  if (!routes.length) return;
+  extra.appendChild(extraHeading());
+  routes.forEach((route) => extra.appendChild(friendCard(route)));
+}
+
+function extraHeading() {
+  const heading = document.createElement("div");
+  heading.className = "day-extra__heading";
+  heading.innerHTML = "<span>Friend Plan</span><h4>整形中の友人別行動</h4>";
+  return heading;
 }
 
 function friendCard(route) {
@@ -138,7 +141,6 @@ function simpleItem(text) {
 
 function init() {
   renderTabs();
-  renderFriendRoutes();
   renderSimpleList("#checkList", data.checkList);
   renderSimpleList("#todoList", data.todoList);
   showDay(data.days[0].id);

@@ -30,10 +30,10 @@ window.TRIP_DATA = {
         event("17:45", "山清炭火ガーデン 江南店", "予約確認。極上サムギョプサルで1杯", "", "Sancheong Sootbul Garden Gangnam Seoul"),
         event("19:45", "店 出発", "指定の夜の店へ", "15分移動", "Sancheong Sootbul Garden Gangnam Seoul", "Gangnam Station, Seoul", "driving"),
         event("20:00", "指定の夜の店", "場所は当日確定。無理に長居しない", "", "Gangnam Station, Seoul"),
-        event("22:45", "江南 出発", "体力があればCOEXへ", "15分移動", "Gangnam Station, Seoul", "Seven Luck Casino Gangnam COEX", "driving"),
-        event("23:00", "COEXカジノ", "短時間だけ勝負。撤退時間を先に決める", "", "Seven Luck Casino Gangnam COEX"),
-        event("00:45", "COEX 出発", "タクシーで宿へ戻る", "45分移動", "Seven Luck Casino Gangnam COEX", "Donggyo-dong, Mapo-gu, Seoul", "driving"),
-        event("01:30", "宿 帰還", "水分補給して就寝", "", "Donggyo-dong, Mapo-gu, Seoul"),
+        event("22:45", "江南 出発", "体力があればパラダイスカジノへ", "30分移動", "Gangnam Station, Seoul", "Paradise Casino Walkerhill, 177 Walkerhill-ro, Gwangjin-gu, Seoul", "driving"),
+        event("23:15", "パラダイスカジノ", "短時間だけ勝負。撤退時間を先に決める", "", "Paradise Casino Walkerhill, 177 Walkerhill-ro, Gwangjin-gu, Seoul"),
+        event("00:45", "カジノ 出発", "タクシーで宿へ戻る", "60分移動", "Paradise Casino Walkerhill, 177 Walkerhill-ro, Gwangjin-gu, Seoul", "Donggyo-dong, Mapo-gu, Seoul", "driving"),
+        event("01:45", "宿 帰還", "水分補給して就寝", "", "Donggyo-dong, Mapo-gu, Seoul"),
       ],
     },
     {
@@ -99,6 +99,28 @@ window.TRIP_DATA = {
         event("20:00", "明洞 出発", "弘大の宿へ戻る", "45分移動", "Myeongdong Station, Seoul", "Donggyo-dong, Mapo-gu, Seoul", "transit"),
         event("20:45", "宿 帰還", "パッキング、空港導線確認、早めに就寝", "", "Donggyo-dong, Mapo-gu, Seoul"),
       ],
+      friendRoutes: [
+        {
+          title: "A：パラダイスカジノコース",
+          merit: "移動は長め。まとまった時間で勝負したい2人向け。",
+          steps: [
+            event("13:15", "江南クリニック周辺 出発", "パラダイスカジノへタクシー移動", "45分移動", "Gangnam Station, Seoul", "Paradise Casino Walkerhill, 177 Walkerhill-ro, Gwangjin-gu, Seoul", "driving"),
+            event("14:00", "パラダイスカジノ", "上限金額を決めて遊ぶ", "", "Paradise Casino Walkerhill, 177 Walkerhill-ro, Gwangjin-gu, Seoul"),
+            event("16:15", "カジノ 出発", "施術終了に合わせて江南へ戻る", "45分移動", "Paradise Casino Walkerhill, 177 Walkerhill-ro, Gwangjin-gu, Seoul", "Gangnam Station, Seoul", "driving"),
+          ],
+        },
+        {
+          title: "B：江北王道観光コース",
+          merit: "明洞屋台とNソウルタワーをまとめて回収できる。",
+          steps: [
+            event("13:15", "江南クリニック周辺 出発", "明洞へ移動", "45分移動", "Gangnam Station, Seoul", "Myeongdong Station, Seoul", "transit"),
+            event("14:00", "明洞屋台通り", "食べ歩き。買いすぎない", "", "Myeongdong Street, Seoul"),
+            event("15:00", "明洞 出発", "Nソウルタワーへ", "45分移動", "Myeongdong Station, Seoul", "N Seoul Tower", "transit"),
+            event("15:45", "Nソウルタワー", "展望台か周辺散歩", "", "N Seoul Tower"),
+            event("16:30", "タワー 出発", "江南で合流", "45分移動", "N Seoul Tower", "Gangnam Station, Seoul", "transit"),
+          ],
+        },
+      ],
     },
     {
       id: "day5",
@@ -113,28 +135,6 @@ window.TRIP_DATA = {
         event("05:30", "AREX乗車", "空港鉄道で仁川国際空港へ", "60分移動", "Hongik University Station, Seoul", "Incheon International Airport", "transit"),
         event("06:30", "仁川国際空港 到着", "ターミナル確認、チェックインへ", "", "Incheon International Airport"),
         event("07:00", "チェックイン・保安検査", "朝食と免税は余裕があれば", "", "Incheon International Airport"),
-      ],
-    },
-  ],
-  friendRoutes: [
-    {
-      title: "A：江南カジノ満喫コース",
-      merit: "クリニック周辺から近く、移動が短い。4時間を使いやすい。",
-      steps: [
-        event("13:15", "江南クリニック周辺 出発", "COEXへタクシー移動", "15分移動", "Gangnam Station, Seoul", "Seven Luck Casino Gangnam COEX", "driving"),
-        event("13:30", "COEXカジノ", "男2人で勝負。上限金額を決める", "", "Seven Luck Casino Gangnam COEX"),
-        event("16:30", "COEX 出発", "合流場所へ戻る", "45分移動", "Seven Luck Casino Gangnam COEX", "Myeongdong Station, Seoul", "transit"),
-      ],
-    },
-    {
-      title: "B：江北王道観光コース",
-      merit: "明洞屋台とNソウルタワーをまとめて回収できる。",
-      steps: [
-        event("13:15", "江南クリニック周辺 出発", "明洞へ移動", "45分移動", "Gangnam Station, Seoul", "Myeongdong Station, Seoul", "transit"),
-        event("14:00", "明洞屋台通り", "食べ歩き。買いすぎない", "", "Myeongdong Street, Seoul"),
-        event("15:00", "明洞 出発", "Nソウルタワーへ", "45分移動", "Myeongdong Station, Seoul", "N Seoul Tower", "transit"),
-        event("15:45", "Nソウルタワー", "展望台か周辺散歩", "", "N Seoul Tower"),
-        event("16:30", "タワー 出発", "明洞で合流", "45分移動", "N Seoul Tower", "Myeongdong Station, Seoul", "transit"),
       ],
     },
   ],

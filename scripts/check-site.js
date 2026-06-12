@@ -43,6 +43,7 @@ function checkContent() {
   assert(html.includes("韓国男旅のしおり"), "タイトルがありません");
   assert(html.includes("dayTabs"), "日別タブがありません");
   assert(html.includes("dayRouteLink"), "日別経路リンクがありません");
+  assert(!html.includes('id="friends"'), "別行動が独立セクションに戻っています");
 }
 
 function checkImage() {
@@ -64,6 +65,25 @@ function checkDayRoutes(days) {
   days.forEach((day) => assert(routeStops(day.events).length > 1, `${day.date} の経路が不足`));
 }
 
+function checkCasino(days) {
+  const text = JSON.stringify(days);
+  assert(text.includes("Paradise Casino Walkerhill"), "カジノがParadiseではありません");
+  assert(!text.includes("Seven Luck"), "Seven Luckが残っています");
+  assert(!text.includes("COEXカジノ"), "COEXカジノが残っています");
+}
+
+function checkFriendRoutes(days) {
+  const daysWithRoutes = days.filter((day) => day.friendRoutes?.length);
+  assert(daysWithRoutes.length === 1, "別行動ルートは1日だけにしてください");
+  assert(daysWithRoutes[0].id === "day4", "別行動ルートは7/19に置いてください");
+}
+
+function checkRouteUrlFormat() {
+  const app = read("assets/app.js");
+  assert(app.includes("google.com/maps/dir/${"), "経路URLがpath形式ではありません");
+  assert(!app.includes("waypoints"), "waypoints形式が残っています");
+}
+
 function routeStops(events) {
   const stops = events.flatMap((item) => [item.from, item.to].filter(Boolean));
   return stops.filter((stop, index) => stop !== stops[index - 1]);
@@ -75,6 +95,9 @@ function checkData() {
   trip.days.forEach((day) => checkQuarterHours(day.events));
   trip.days.forEach((day) => checkRoutes(day.events));
   checkDayRoutes(trip.days);
+  checkCasino(trip.days);
+  checkFriendRoutes(trip.days);
+  checkRouteUrlFormat();
 }
 
 function run() {

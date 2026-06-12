@@ -9,8 +9,8 @@
 - 15分単位の余裕あるタイムライン
 - 移動時間を含めた予定
 - 各場所・移動のGoogle Mapsリンク
-- 1日ごとの通し経路Google Mapsリンク
-- 7月19日の整形中に友人2人が動く別行動ルート
+- 線でつながりやすいGoogle Mapsの通し経路リンク
+- 7月19日の日程内に友人2人が動く別行動ルート
 - 持ち物と事前予約チェック
 
 ## ローカル確認
@@ -45,7 +45,7 @@ https://taro1025.github.io/korea-trip-shiori/
 
 - 山清炭火ガーデン: https://www.catchtable.net/ja-JP/shop/sancheongstar
 - 広蔵市場: https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=106345
-- Seven Luck Casino Gangnam COEX: https://www.7luck.com/ABOT_01_01/default?GHLC_TYP=KA&sel_lang_typ=EN
+- Paradise Casino Walkerhill: https://www.paradisecasino.co.kr/
 - 楊花漢江公園: https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=91221
 - Nソウルタワー: https://www.nseoultower.co.kr/eng/
 - DMZツアー注意点: https://www.timetravelturtle.com/south-korea/dmz-tour-from-seoul/
