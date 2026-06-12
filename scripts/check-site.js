@@ -43,6 +43,7 @@ function checkContent() {
   assert(html.includes("韓国男旅のしおり"), "タイトルがありません");
   assert(html.includes("dayTabs"), "日別タブがありません");
   assert(html.includes("dayRouteLink"), "日別経路リンクがありません");
+  assert(html.includes("wantList"), "行きたいこと回収リストがありません");
   assert(!html.includes('id="friends"'), "別行動が独立セクションに戻っています");
 }
 
@@ -84,6 +85,13 @@ function checkRouteUrlFormat() {
   assert(!app.includes("waypoints"), "waypoints形式が残っています");
 }
 
+function checkWantList(trip) {
+  const required = ["DMZ", "サンナクジ", "ジムジルバン", "ポテンツァ", "二重整形", "美容院"];
+  const text = JSON.stringify(trip);
+  required.forEach((name) => assert(text.includes(name), `${name} がありません`));
+  assert(trip.wantList.length >= 14, "行きたいこと回収リストが不足しています");
+}
+
 function routeStops(events) {
   const stops = events.flatMap((item) => [item.from, item.to].filter(Boolean));
   return stops.filter((stop, index) => stop !== stops[index - 1]);
@@ -98,6 +106,7 @@ function checkData() {
   checkCasino(trip.days);
   checkFriendRoutes(trip.days);
   checkRouteUrlFormat();
+  checkWantList(trip);
 }
 
 function run() {

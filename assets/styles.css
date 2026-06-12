@@ -161,6 +161,10 @@ a {
   padding: 24px;
 }
 
+.panel--wide {
+  grid-column: 1 / -1;
+}
+
 .panel h2,
 .section-heading h2 {
   margin: 0;
@@ -369,7 +373,8 @@ a {
 }
 
 .check-list,
-.todo-list {
+.todo-list,
+.want-list {
   display: grid;
   gap: 10px;
   margin: 18px 0 0;
@@ -378,12 +383,28 @@ a {
 }
 
 .check-list li,
-.todo-list li {
+.todo-list li,
+.want-list li {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0.75rem 0.9rem;
   background: #fbfcff;
   font-weight: 800;
+}
+
+.want-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.want-list li {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.want-list span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 750;
 }
 
 .footer {
@@ -426,6 +447,7 @@ a {
 
   .overview__grid,
   .prep-grid,
+  .want-list,
   .day-panel,
   .day-extra {
     grid-template-columns: 1fr;

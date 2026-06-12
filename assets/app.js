@@ -133,6 +133,18 @@ function renderSimpleList(selector, items) {
   items.forEach((text) => list.appendChild(simpleItem(text)));
 }
 
+function renderWantList() {
+  const list = $("#wantList");
+  list.innerHTML = "";
+  data.wantList.forEach((item) => list.appendChild(wantItem(item)));
+}
+
+function wantItem([name, timing]) {
+  const item = document.createElement("li");
+  item.innerHTML = `<strong>${name}</strong><span>${timing}</span>`;
+  return item;
+}
+
 function simpleItem(text) {
   const item = document.createElement("li");
   item.textContent = text;
@@ -143,6 +155,7 @@ function init() {
   renderTabs();
   renderSimpleList("#checkList", data.checkList);
   renderSimpleList("#todoList", data.todoList);
+  renderWantList();
   showDay(data.days[0].id);
 }
 
