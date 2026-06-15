@@ -28,6 +28,33 @@ function renderTabs() {
   data.days.forEach((day) => tabs.appendChild(createTab(day)));
 }
 
+function renderInternationalRoutes() {
+  $("#accessSummary").textContent = data.accessSummary;
+  const list = $("#internationalRoutes");
+  list.innerHTML = "";
+  data.internationalRoutes.forEach((route) => list.appendChild(accessCard(route)));
+}
+
+function accessCard(route) {
+  const article = document.createElement("article");
+  article.className = "access-card";
+  article.innerHTML = accessCardHtml(route);
+  return article;
+}
+
+function accessCardHtml(route) {
+  return [
+    `<div class="access-card__top"><span>${route.badge}</span><h3>${route.title}</h3></div>`,
+    `<p>${route.summary}</p>`,
+    `<ul>${accessOptions(route.options)}</ul>`,
+    `<p class="access-card__note">${route.note}</p>`,
+  ].join("");
+}
+
+function accessOptions(options) {
+  return options.map((option) => `<li>${option}</li>`).join("");
+}
+
 function createTab(day) {
   const button = document.createElement("button");
   button.className = "day-tab";
@@ -176,6 +203,7 @@ function simpleItem(text) {
 
 function init() {
   renderTabs();
+  renderInternationalRoutes();
   renderSimpleList("#checkList", data.checkList);
   renderSimpleList("#todoList", data.todoList);
   renderWantList();
