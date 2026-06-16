@@ -8,9 +8,9 @@
 - 4泊5日の予定を1日ずつ表示
 - 15分単位の余裕あるタイムライン
 - 移動時間を含めた予定
-- 各場所・移動のGoogle Mapsリンク
-- 現在地に依存しない1日分のGoogle Maps一括経路リンク
-- Google Mapsで線が出やすい2地点ずつの補助経路リンク
+- 各場所・移動のNaver Mapリンク
+- 現在地に依存しない1日分のNaver Map経路リンク
+- Naver Mapの経由地上限に合わせた分割経路リンク
 - 7月19日の日程内に友人2人が動く別行動ルート
 - 到着便・宿・施術先など未確定情報のTODO表示欄
 - 入国、緊急連絡、DMZ、7月気候、地図、施術の現地メモ
@@ -29,10 +29,9 @@ python3 -m http.server 4173
 
 ## 編集する場所
 
-日程、場所、TODO、Google Mapsの起点・目的地は `assets/itinerary.js` の `window.TRIP_DATA` を編集します。
-1日分の一括経路は、その日の最初の地点を `origin`、最後の地点を `destination`、途中地点を `waypoints` にして開きます。
-現在地が日本でも現在地起点にはしません。
-Google Maps側の制限により、スマホで経由地が省略される場合は2地点ずつの補助経路リンクを使います。
+日程、場所、TODO、Naver Mapの起点・目的地は `assets/itinerary.js` の `window.TRIP_DATA` を編集します。
+Naver Map経路は `places` の緯度経度を使い、現在地が日本でも現在地起点にはしません。
+1日分の経路は、Naver Mapの経由地上限に合わせて必要に応じて分割します。
 
 未確定情報は `keyFacts` に `TODO` として表示しています。
 未消化Todoは `openTodos` を編集してください。
@@ -68,5 +67,5 @@ https://taro1025.github.io/korea-trip-shiori/
 - 仁川空港出発案内: https://www.airport.kr/ap_en/6636/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGYXBfZW4lMkY5MzclMkYxMzgxOTglMkZhcnRjbFZpZXcuZG8lM0Y%3D
 - ソウルの気候: https://english.seoul.go.kr/seoul-views/meaning-of-seoul/3-climate/
 - DMZツアー注意点: https://www.timetravelturtle.com/south-korea/dmz-tour-from-seoul/
-- Google Maps URLs: https://developers.google.com/maps/documentation/urls/get-started
+- Naver Maps URL Scheme: https://guide.ncloud-docs.com/docs/en/maps-url-scheme
 - 画像: https://unsplash.com/s/photos/gangnam

@@ -1,5 +1,29 @@
 window.TRIP_DATA = {
   base: "Donggyo-dong, Mapo-gu, Seoul",
+  places: {
+    "Donggyo-dong, Mapo-gu, Seoul": place("동교동", 37.5578, 126.926),
+    "Hongik University Station, Seoul": place("홍대입구역", 37.5572, 126.9254),
+    "Sancheong Sootbul Garden Gangnam Seoul": place("산청숯불가든 강남 후보", 37.4979, 127.0276),
+    "Gangnam Station, Seoul": place("강남역", 37.4979, 127.0276),
+    "Paradise Casino Walkerhill, 177 Walkerhill-ro, Gwangjin-gu, Seoul": place("파라다이스 카지노 워커힐", 37.5552, 127.1108),
+    "Jjimjilbang Hongdae Seoul": place("홍대 찜질방 후보", 37.5551, 126.9245),
+    "Hongdae Street, Seoul": place("홍대거리", 37.5558, 126.9237),
+    "Hair salon Hongdae Seoul": place("홍대 미용실 후보", 37.5556, 126.9228),
+    "Hongdae Cafe Street, Seoul": place("홍대 카페거리", 37.5547, 126.9231),
+    "Gwangjang Market, Seoul": place("광장시장", 37.5701, 126.9996),
+    "Jongno 3-ga Pojangmacha Street, Seoul": place("종로3가 포장마차거리", 37.5705, 126.9919),
+    "Jongno 3-ga Station, Seoul": place("종로3가역", 37.5704, 126.9919),
+    "Imjingak Pyeonghwa-Nuri Park": place("임진각 평화누리공원", 37.8898, 126.7401),
+    "DMZ, Paju, South Korea": place("DMZ 파주", 37.916, 126.688),
+    "Paju, South Korea": place("파주시", 37.7599, 126.78),
+    "Yanghwa Hangang Park, Seoul": place("양화한강공원", 37.542, 126.9028),
+    "Hongdae Club Street, Seoul": place("홍대 클럽거리", 37.5509, 126.922),
+    "Myeongdong Station, Seoul": place("명동역", 37.5609, 126.9864),
+    "Myeongdong Seolleongtang Seoul": place("명동 설렁탕 후보", 37.5638, 126.9853),
+    "Myeongdong Street, Seoul": place("명동거리", 37.5637, 126.985),
+    "N Seoul Tower": place("N서울타워", 37.5512, 126.9882),
+    "Incheon International Airport": place("인천국제공항", 37.4602, 126.4407),
+  },
   keyFacts: [
     fact("到着便", "TODO", "便名、仁川T1/T2、到着時刻、空港から弘大までの開始時刻"),
     fact("帰国便", "TODO", "便名、出発時刻、T1/T2、3時間前到着から逆算した宿出発時刻"),
@@ -211,6 +235,10 @@ window.TRIP_DATA = {
 
 function event(time, title, detail, move, from, to = "", mode = "transit") {
   return { time, title, detail, move, from, to, mode };
+}
+
+function place(name, lat, lng) {
+  return { name, lat, lng };
 }
 
 function fact(label, value, detail) {

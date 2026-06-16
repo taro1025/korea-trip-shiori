@@ -256,6 +256,11 @@ a {
   font-size: 1rem;
 }
 
+.day-route-all-list {
+  display: grid;
+  gap: 8px;
+}
+
 .day-route-all {
   display: inline-flex;
   width: 100%;

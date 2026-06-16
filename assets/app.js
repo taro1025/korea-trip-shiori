@@ -1,36 +1,45 @@
 const data = window.TRIP_DATA;
 const $ = (selector) => document.querySelector(selector);
-const MAX_WAYPOINTS = 9;
-const MAX_ROUTE_STOPS = MAX_WAYPOINTS + 2;
+const EARTH_RADIUS = 6378137;
+const MAX_NAVER_WAYPOINTS = 5;
+const MAX_NAVER_ROUTE_STOPS = MAX_NAVER_WAYPOINTS + 2;
 
 function mapUrl(item) {
-  if (!item.to) {
-    return `https://www.google.com/maps/search/?api=1&query=${encode(item.from)}`;
-  }
-  return directionUrl(item.from, item.to, item.mode);
+  if (!item.to) return naverSearchUrl(item.from);
+  return naverRouteUrl([item.from, item.to], item.mode);
 }
 
-function directionUrl(origin, destination, mode) {
-  const params = new URLSearchParams({
-    api: "1",
-    origin,
-    destination,
-    travelmode: mode,
-  });
-  return `https://www.google.com/maps/dir/?${params.toString()}`;
+function naverSearchUrl(placeName) {
+  const place = data.places[placeName];
+  return `https://map.naver.com/p/search/${encode(place?.name || placeName)}`;
 }
 
-function dayRouteUrl(events) {
-  const stops = routeStops(events).slice(0, MAX_ROUTE_STOPS);
-  if (stops.length < 2) return mapUrl({ from: stops[0] || data.base });
-  const params = new URLSearchParams({
-    api: "1",
-    origin: stops[0],
-    destination: stops[stops.length - 1],
-  });
-  const waypoints = stops.slice(1, -1);
-  if (waypoints.length) params.set("waypoints", waypoints.join("|"));
-  return `https://www.google.com/maps/dir/?${params.toString()}`;
+function naverRouteUrl(stops, mode) {
+  const points = stops.map(naverPoint).join("/");
+  return `https://map.naver.com/p/directions/${points}/-/${naverMode(mode)}?c=12.00,0,0,0,dh`;
+}
+
+function naverPoint(placeName) {
+  const place = placeInfo(placeName);
+  const { x, y } = mercator(place);
+  return `${x.toFixed(7)},${y.toFixed(7)},${encode(place.name)},0,PLACE_POI`;
+}
+
+function mercator({ lat, lng }) {
+  const x = (EARTH_RADIUS * lng * Math.PI) / 180;
+  const sin = Math.sin((lat * Math.PI) / 180);
+  const y = (EARTH_RADIUS * Math.log((1 + sin) / (1 - sin))) / 2;
+  return { x, y };
+}
+
+function placeInfo(placeName) {
+  const place = data.places[placeName];
+  if (!place) throw new Error(`${placeName} のNaver Map座標がありません`);
+  return place;
+}
+
+function naverMode(mode) {
+  return { driving: "car", transit: "transit", walking: "walk" }[mode] || "transit";
 }
 
 function routeStops(events) {
@@ -38,11 +47,26 @@ function routeStops(events) {
   return stops.filter((stop, index) => stop !== stops[index - 1]);
 }
 
-function routeHint(events) {
-  if (routeStops(events).length > MAX_ROUTE_STOPS) {
-    return `Google Mapsの上限に合わせ、最初の${MAX_ROUTE_STOPS}地点まで開きます。`;
+function routeChunks(events) {
+  const stops = routeStops(events);
+  const chunks = [];
+  for (let start = 0; start < stops.length - 1; start += MAX_NAVER_ROUTE_STOPS - 1) {
+    chunks.push(stops.slice(start, start + MAX_NAVER_ROUTE_STOPS));
   }
-  return "現在地ではなく、この日の最初の地点から開きます。スマホで経由地が省略される場合は下の区間リンクで確認。";
+  return chunks.filter((chunk) => chunk.length > 1);
+}
+
+function routeHint(events) {
+  if (routeChunks(events).length > 1) {
+    return "Naver Mapの経由地上限に合わせて分割。現在地ではなく予定地点から開きます。";
+  }
+  return "Naver Mapで開きます。現在地ではなく、この日の最初の予定地点から開きます。";
+}
+
+function dayRouteMode(events) {
+  const routes = events.filter((item) => item.to);
+  if (routes.every((item) => item.mode === "driving")) return "driving";
+  return "transit";
 }
 
 function encode(value) {
@@ -115,14 +139,31 @@ function timelineHtml(item) {
 }
 
 function routeLink(item) {
-  return `<a class="route-link" href="${mapUrl(item)}" target="_blank" rel="noreferrer">Google Mapsで見る</a>`;
+  return `<a class="route-link" href="${mapUrl(item)}" target="_blank" rel="noreferrer">Naver Mapで見る</a>`;
 }
 
 function renderDayRouteAll(events) {
-  const link = $("#dayRouteAll");
-  link.href = dayRouteUrl(events);
-  link.hidden = routeStops(events).length < 2;
+  const list = $("#dayRouteAllList");
+  const chunks = routeChunks(events);
+  list.innerHTML = "";
+  list.hidden = chunks.length === 0;
+  chunks.forEach((chunk, index) => list.appendChild(dayRouteAllLink(chunk, index, chunks.length, dayRouteMode(events))));
   $("#dayRouteHint").textContent = routeHint(events);
+}
+
+function dayRouteAllLink(stops, index, total, mode) {
+  const link = document.createElement("a");
+  link.className = "day-route-all";
+  link.href = naverRouteUrl(stops, mode);
+  link.target = "_blank";
+  link.rel = "noreferrer";
+  link.textContent = dayRouteAllLabel(index, total);
+  return link;
+}
+
+function dayRouteAllLabel(index, total) {
+  if (total === 1) return "1日分をNaver Mapで見る";
+  return `Naver Mapで見る ${index + 1}/${total}`;
 }
 
 function renderDayRoutes(events) {
