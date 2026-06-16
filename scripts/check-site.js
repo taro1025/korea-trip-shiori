@@ -85,7 +85,11 @@ function checkFriendRoutes(days) {
 
 function checkRouteUrlFormat() {
   const app = read("assets/app.js");
-  assert(app.includes("map.naver.com/p/directions"), "Naver Map経路URLではありません");
+  assert(app.includes("nmap://"), "Naver MapアプリURLではありません");
+  assert(app.includes("intent://"), "Android向けNaver Map起動URLがありません");
+  assert(app.includes("route/public"), "Naver公共交通経路URLではありません");
+  assert(app.includes('setNaverEndpoint(params, "s"'), "Naver起点座標がありません");
+  assert(app.includes('setNaverEndpoint(params, "d"'), "Naver目的地座標がありません");
   assert(app.includes("MAX_NAVER_WAYPOINTS"), "Naver Mapの経由地上限がありません");
   assert(app.includes("Naver Mapで見る"), "区間リンクがNaver Map表記ではありません");
 }

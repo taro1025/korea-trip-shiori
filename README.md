@@ -9,7 +9,7 @@
 - 15分単位の余裕あるタイムライン
 - 移動時間を含めた予定
 - 各場所・移動のNaver Mapリンク
-- 現在地に依存しない1日分のNaver Map経路リンク
+- Naver Mapアプリで開く、現在地に依存しない1日分の経路リンク
 - Naver Mapの経由地上限に合わせた分割経路リンク
 - 7月19日の日程内に友人2人が動く別行動ルート
 - 到着便・宿・施術先など未確定情報のTODO表示欄
@@ -30,7 +30,8 @@ python3 -m http.server 4173
 ## 編集する場所
 
 日程、場所、TODO、Naver Mapの起点・目的地は `assets/itinerary.js` の `window.TRIP_DATA` を編集します。
-Naver Map経路は `places` の緯度経度を使い、現在地が日本でも現在地起点にはしません。
+Naver Map経路は公式URLスキーム `nmap://route/...` と `places` の緯度経度を使い、現在地が日本でも現在地起点にはしません。
+AndroidではNaver Mapアプリを開きやすい `intent://` 形式に自動変換します。
 1日分の経路は、Naver Mapの経由地上限に合わせて必要に応じて分割します。
 
 未確定情報は `keyFacts` に `TODO` として表示しています。

@@ -1,12 +1,26 @@
 const data = window.TRIP_DATA;
 const $ = (selector) => document.querySelector(selector);
-const EARTH_RADIUS = 6378137;
 const MAX_NAVER_WAYPOINTS = 5;
 const MAX_NAVER_ROUTE_STOPS = MAX_NAVER_WAYPOINTS + 2;
+const NAVER_APP_NAME = "https://taro1025.github.io/korea-trip-shiori/";
 
 function mapUrl(item) {
   if (!item.to) return naverSearchUrl(item.from);
   return naverRouteUrl([item.from, item.to], item.mode);
+}
+
+function linkUrl(url) {
+  if (url.startsWith("nmap://") && isAndroid()) return androidIntentUrl(url);
+  return url;
+}
+
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent);
+}
+
+function androidIntentUrl(url) {
+  const intentPath = url.replace("nmap://", "intent://");
+  return `${intentPath}#Intent;scheme=nmap;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.nhn.android.nmap;end`;
 }
 
 function naverSearchUrl(placeName) {
@@ -15,31 +29,34 @@ function naverSearchUrl(placeName) {
 }
 
 function naverRouteUrl(stops, mode) {
-  const points = stops.map(naverPoint).join("/");
-  return `https://map.naver.com/p/directions/${points}/-/${naverMode(mode)}?c=12.00,0,0,0,dh`;
+  const path = naverRoutePath(mode);
+  const params = naverRouteParams(stops);
+  return `nmap://${path}?${params.toString()}`;
 }
 
-function naverPoint(placeName) {
-  const place = placeInfo(placeName);
-  const { x, y } = mercator(place);
-  return `${x.toFixed(7)},${y.toFixed(7)},${encode(place.name)},0,PLACE_POI`;
+function naverRoutePath(mode) {
+  return { driving: "route/car", transit: "route/public", walking: "route/walk" }[mode] || "route/public";
 }
 
-function mercator({ lat, lng }) {
-  const x = (EARTH_RADIUS * lng * Math.PI) / 180;
-  const sin = Math.sin((lat * Math.PI) / 180);
-  const y = (EARTH_RADIUS * Math.log((1 + sin) / (1 - sin))) / 2;
-  return { x, y };
+function naverRouteParams(stops) {
+  const places = stops.map(placeInfo);
+  const params = new URLSearchParams({ appname: NAVER_APP_NAME });
+  setNaverEndpoint(params, "s", places[0]);
+  setNaverEndpoint(params, "d", places[places.length - 1]);
+  places.slice(1, -1).forEach((place, index) => setNaverEndpoint(params, `v${index + 1}`, place));
+  return params;
+}
+
+function setNaverEndpoint(params, prefix, place) {
+  params.set(`${prefix}lat`, String(place.lat));
+  params.set(`${prefix}lng`, String(place.lng));
+  params.set(`${prefix}name`, place.name);
 }
 
 function placeInfo(placeName) {
   const place = data.places[placeName];
   if (!place) throw new Error(`${placeName} のNaver Map座標がありません`);
   return place;
-}
-
-function naverMode(mode) {
-  return { driving: "car", transit: "transit", walking: "walk" }[mode] || "transit";
 }
 
 function routeStops(events) {
@@ -58,9 +75,9 @@ function routeChunks(events) {
 
 function routeHint(events) {
   if (routeChunks(events).length > 1) {
-    return "Naver Mapの経由地上限に合わせて分割。現在地ではなく予定地点から開きます。";
+    return "Naver Mapアプリで開きます。経由地上限に合わせて分割しています。";
   }
-  return "Naver Mapで開きます。現在地ではなく、この日の最初の予定地点から開きます。";
+  return "Naver Mapアプリで開きます。現在地ではなく、この日の最初の予定地点から開きます。";
 }
 
 function dayRouteMode(events) {
@@ -139,7 +156,13 @@ function timelineHtml(item) {
 }
 
 function routeLink(item) {
-  return `<a class="route-link" href="${mapUrl(item)}" target="_blank" rel="noreferrer">Naver Mapで見る</a>`;
+  const url = mapUrl(item);
+  return `<a class="route-link" href="${linkUrl(url)}"${routeAttrs(url)}>Naver Mapで見る</a>`;
+}
+
+function routeAttrs(url) {
+  if (!url.startsWith("https://")) return "";
+  return ' target="_blank" rel="noreferrer"';
 }
 
 function renderDayRouteAll(events) {
@@ -154,9 +177,7 @@ function renderDayRouteAll(events) {
 function dayRouteAllLink(stops, index, total, mode) {
   const link = document.createElement("a");
   link.className = "day-route-all";
-  link.href = naverRouteUrl(stops, mode);
-  link.target = "_blank";
-  link.rel = "noreferrer";
+  link.href = linkUrl(naverRouteUrl(stops, mode));
   link.textContent = dayRouteAllLabel(index, total);
   return link;
 }
@@ -175,11 +196,17 @@ function renderDayRoutes(events) {
 
 function dayRouteItem(item) {
   const link = document.createElement("a");
-  link.href = mapUrl(item);
-  link.target = "_blank";
-  link.rel = "noreferrer";
+  link.href = linkUrl(mapUrl(item));
+  setExternalAttrs(link);
   link.innerHTML = `<strong>${item.time} ${routeName(item)}</strong><span>${item.move || modeLabel(item.mode)}</span>`;
   return link;
+}
+
+function setExternalAttrs(link) {
+  if (link.href.startsWith("https://")) {
+    link.target = "_blank";
+    link.rel = "noreferrer";
+  }
 }
 
 function routeName(item) {
