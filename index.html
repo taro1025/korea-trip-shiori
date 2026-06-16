@@ -8,7 +8,7 @@
       content="2026年7月16日から20日までの韓国男旅しおり。日別予定、移動時間、Google Maps経路をまとめています。"
     />
     <title>韓国男旅のしおり</title>
-    <link rel="stylesheet" href="assets/styles.css?v=20260612-route-segments" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260616-full-day-route" />
   </head>
   <body>
     <header class="hero" id="top">
@@ -66,6 +66,10 @@
               <p id="dayTheme"></p>
               <div class="day-routes" id="dayRoutes">
                 <h4>この日の経路</h4>
+                <a class="day-route-all" id="dayRouteAll" target="_blank" rel="noreferrer">
+                  1日分をまとめてGoogle Mapsで見る
+                </a>
+                <p class="day-routes__hint" id="dayRouteHint"></p>
                 <div class="day-route-list" id="dayRouteList"></div>
               </div>
               <ul id="dayNotes"></ul>
@@ -102,7 +106,7 @@
       <a href="#top">上へ戻る</a>
     </footer>
 
-    <script src="assets/itinerary.js?v=20260612-route-segments" defer></script>
-    <script src="assets/app.js?v=20260612-route-segments" defer></script>
+    <script src="assets/itinerary.js?v=20260616-full-day-route" defer></script>
+    <script src="assets/app.js?v=20260616-full-day-route" defer></script>
   </body>
 </html>

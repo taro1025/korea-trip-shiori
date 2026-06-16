@@ -42,6 +42,7 @@ function checkContent() {
   const html = read("index.html");
   assert(html.includes("韓国男旅のしおり"), "タイトルがありません");
   assert(html.includes("dayTabs"), "日別タブがありません");
+  assert(html.includes("dayRouteAll"), "1日分の一括経路リンクがありません");
   assert(html.includes("dayRouteList"), "日別経路リストがありません");
   assert(html.includes("wantList"), "行きたいこと回収リストがありません");
   assert(!html.includes('id="friends"'), "別行動が独立セクションに戻っています");
@@ -82,8 +83,11 @@ function checkFriendRoutes(days) {
 function checkRouteUrlFormat() {
   const app = read("assets/app.js");
   assert(app.includes("google.com/maps/dir/?"), "経路URLがDirections形式ではありません");
+  assert(app.includes("origin"), "一括経路の起点指定がありません");
+  assert(app.includes("destination"), "一括経路の目的地指定がありません");
+  assert(app.includes("waypoints"), "一括経路の経由地指定がありません");
   assert(app.includes("travelmode"), "移動手段指定がありません");
-  assert(!app.includes("waypoints"), "waypoints形式が残っています");
+  assert(app.includes("MAX_WAYPOINTS"), "Google Mapsの経由地上限がありません");
 }
 
 function checkWantList(trip) {
@@ -91,6 +95,19 @@ function checkWantList(trip) {
   const text = JSON.stringify(trip);
   required.forEach((name) => assert(text.includes(name), `${name} がありません`));
   assert(trip.wantList.length >= 14, "行きたいこと回収リストが不足しています");
+}
+
+function routeStops(events) {
+  const stops = events.flatMap((event) => [event.from, event.to].filter(Boolean));
+  return stops.filter((stop, index) => stop !== stops[index - 1]);
+}
+
+function checkFullDayRoutes(days) {
+  days.forEach((day) => {
+    const stops = routeStops(day.events);
+    assert(stops.length >= 2, `${day.date} の一括経路地点が不足しています`);
+    assert(stops.length <= 11, `${day.date} の一括経路地点が多すぎます`);
+  });
 }
 
 function checkData() {
@@ -103,6 +120,7 @@ function checkData() {
   checkFriendRoutes(trip.days);
   checkRouteUrlFormat();
   checkWantList(trip);
+  checkFullDayRoutes(trip.days);
 }
 
 function run() {

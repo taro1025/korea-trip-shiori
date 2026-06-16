@@ -256,6 +256,28 @@ a {
   font-size: 1rem;
 }
 
+.day-route-all {
+  display: inline-flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--red);
+  padding: 0.78rem 0.9rem;
+  color: #fff;
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+}
+
+.day-routes__hint {
+  margin: 8px 0 12px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
 .day-route-list {
   display: grid;
   gap: 8px;

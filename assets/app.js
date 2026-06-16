@@ -1,5 +1,7 @@
 const data = window.TRIP_DATA;
 const $ = (selector) => document.querySelector(selector);
+const MAX_WAYPOINTS = 9;
+const MAX_ROUTE_STOPS = MAX_WAYPOINTS + 2;
 
 function mapUrl(item) {
   if (!item.to) {
@@ -16,6 +18,31 @@ function directionUrl(origin, destination, mode) {
     travelmode: mode,
   });
   return `https://www.google.com/maps/dir/?${params.toString()}`;
+}
+
+function dayRouteUrl(events) {
+  const stops = routeStops(events).slice(0, MAX_ROUTE_STOPS);
+  if (stops.length < 2) return mapUrl({ from: stops[0] || data.base });
+  const params = new URLSearchParams({
+    api: "1",
+    origin: stops[0],
+    destination: stops[stops.length - 1],
+  });
+  const waypoints = stops.slice(1, -1);
+  if (waypoints.length) params.set("waypoints", waypoints.join("|"));
+  return `https://www.google.com/maps/dir/?${params.toString()}`;
+}
+
+function routeStops(events) {
+  const stops = events.flatMap((item) => [item.from, item.to].filter(Boolean));
+  return stops.filter((stop, index) => stop !== stops[index - 1]);
+}
+
+function routeHint(events) {
+  if (routeStops(events).length > MAX_ROUTE_STOPS) {
+    return `Google Mapsの上限に合わせ、最初の${MAX_ROUTE_STOPS}地点まで開きます。`;
+  }
+  return "現在地ではなく、この日の最初の地点から開きます。スマホで経由地が省略される場合は下の区間リンクで確認。";
 }
 
 function encode(value) {
@@ -44,6 +71,7 @@ function showDay(dayId) {
   $("#dayDate").textContent = day.date;
   $("#dayTitle").textContent = day.title;
   $("#dayTheme").textContent = day.theme;
+  renderDayRouteAll(day.events);
   renderDayRoutes(day.events);
   renderNotes(day.notes);
   renderTimeline(day.events);
@@ -88,6 +116,13 @@ function timelineHtml(item) {
 
 function routeLink(item) {
   return `<a class="route-link" href="${mapUrl(item)}" target="_blank" rel="noreferrer">Google Mapsで見る</a>`;
+}
+
+function renderDayRouteAll(events) {
+  const link = $("#dayRouteAll");
+  link.href = dayRouteUrl(events);
+  link.hidden = routeStops(events).length < 2;
+  $("#dayRouteHint").textContent = routeHint(events);
 }
 
 function renderDayRoutes(events) {
