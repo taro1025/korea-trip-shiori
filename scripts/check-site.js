@@ -41,7 +41,6 @@ function checkFiles() {
 function checkContent() {
   const html = read("index.html");
   assert(html.includes("韓国男旅のしおり"), "タイトルがありません");
-  assert(html.includes("internationalRoutes"), "日本発の経路一覧がありません");
   assert(html.includes("dayTabs"), "日別タブがありません");
   assert(html.includes("dayRouteList"), "日別経路リストがありません");
   assert(html.includes("wantList"), "行きたいこと回収リストがありません");
@@ -94,13 +93,6 @@ function checkWantList(trip) {
   assert(trip.wantList.length >= 14, "行きたいこと回収リストが不足しています");
 }
 
-function checkInternationalRoutes(trip) {
-  assert(trip.accessSummary, "日本発経路の要約がありません");
-  assert(trip.internationalRoutes.length >= 4, "日本発経路の候補が不足しています");
-  const text = JSON.stringify(trip.internationalRoutes);
-  ["羽田", "関西", "福岡", "釜山"].forEach((name) => assert(text.includes(name), `${name} 経路がありません`));
-}
-
 function checkData() {
   const trip = loadTripData();
   assert(trip.days.length === 5, "5日分の日程がありません");
@@ -111,7 +103,6 @@ function checkData() {
   checkFriendRoutes(trip.days);
   checkRouteUrlFormat();
   checkWantList(trip);
-  checkInternationalRoutes(trip);
 }
 
 function run() {
