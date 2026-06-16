@@ -35,7 +35,7 @@ a {
 
 .hero {
   display: flex;
-  min-height: 78svh;
+  min-height: clamp(420px, 58svh, 640px);
   flex-direction: column;
   background:
     linear-gradient(90deg, rgba(13, 17, 23, 0.82), rgba(13, 17, 23, 0.34)),
@@ -74,7 +74,7 @@ a {
 
 .hero__body {
   width: min(1120px, calc(100% - 32px));
-  margin: auto auto 9vh;
+  margin: auto auto 6vh;
 }
 
 .eyebrow,
@@ -129,7 +129,7 @@ a {
 }
 
 .section {
-  padding: 54px 0;
+  padding: 46px 0;
 }
 
 .section__inner {
@@ -166,7 +166,8 @@ a {
 }
 
 .panel h2,
-.section-heading h2 {
+.section-heading h2,
+.info-panel h2 {
   margin: 0;
   font-size: 1.55rem;
 }
@@ -187,12 +188,15 @@ a {
 
 .day-tabs {
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
+  overflow-x: auto;
   margin-bottom: 14px;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
 }
 
 .day-tab {
+  flex: 0 0 auto;
   min-height: 42px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -202,12 +206,47 @@ a {
   font: inherit;
   font-weight: 900;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .day-tab[aria-selected="true"] {
   border-color: var(--teal);
   background: var(--teal-soft);
   color: #003f45;
+}
+
+.info-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-top: -4px;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.info-tab {
+  flex: 0 0 auto;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 0.62rem 0.86rem;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.info-tab[aria-selected="true"] {
+  border-color: var(--red);
+  background: #fff0ef;
+  color: var(--red-dark);
+}
+
+.info-panel[hidden] {
+  display: none;
 }
 
 .day-panel {
@@ -251,9 +290,36 @@ a {
   margin-top: 16px;
 }
 
-.day-routes h4 {
-  margin: 0 0 10px;
-  font-size: 1rem;
+.day-routes summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcff;
+  padding: 0.72rem 0.85rem;
+  color: #003f45;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.day-routes summary::after {
+  content: "+";
+  color: var(--teal);
+  font-size: 1.2rem;
+}
+
+.day-routes[open] summary {
+  margin-bottom: 10px;
+}
+
+.day-routes[open] summary::after {
+  content: "-";
+}
+
+.day-routes summary::-webkit-details-marker {
+  display: none;
 }
 
 .day-route-all-list {

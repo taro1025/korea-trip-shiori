@@ -107,6 +107,37 @@ function createTab(day) {
   return button;
 }
 
+function initInfoTabs() {
+  const tabs = document.querySelectorAll(".info-tab");
+  tabs.forEach((tab) => tab.addEventListener("click", () => showInfoPanel(tab.dataset.panel)));
+  initInfoLinks();
+  showInfoPanel(defaultInfoPanel(tabs));
+}
+
+function defaultInfoPanel(tabs) {
+  return [...tabs].find((tab) => tab.getAttribute("aria-selected") === "true")?.dataset.panel;
+}
+
+function initInfoLinks() {
+  document.querySelectorAll("[data-info-panel]").forEach((link) => {
+    link.addEventListener("click", () => showInfoPanel(link.dataset.infoPanel));
+  });
+}
+
+function showInfoPanel(panelId) {
+  if (!panelId) return;
+  document.querySelectorAll(".info-panel").forEach((panel) => {
+    panel.hidden = panel.id !== panelId;
+  });
+  updateInfoTabs(panelId);
+}
+
+function updateInfoTabs(panelId) {
+  document.querySelectorAll(".info-tab").forEach((tab) => {
+    tab.setAttribute("aria-selected", String(tab.dataset.panel === panelId));
+  });
+}
+
 function showDay(dayId) {
   const day = data.days.find((item) => item.id === dayId) || data.days[0];
   $("#dayDate").textContent = day.date;
@@ -320,6 +351,7 @@ function simpleItem(text) {
 
 function init() {
   renderTabs();
+  initInfoTabs();
   renderFacts();
   renderMemos();
   renderSimpleList("#checkList", data.checkList);

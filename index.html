@@ -8,7 +8,7 @@
       content="2026年7月16日から20日までの韓国男旅しおり。日別予定、移動時間、Google Maps経路をまとめています。"
     />
     <title>韓国男旅のしおり</title>
-    <link rel="stylesheet" href="assets/styles.css?v=20260616-naver-app-routes" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260616-compact-tabs" />
   </head>
   <body>
     <header class="hero" id="top">
@@ -16,8 +16,8 @@
         <a class="nav__brand" href="#top">韓国男旅</a>
         <div class="nav__links">
           <a href="#days">日程</a>
-          <a href="#prep">準備</a>
-          <a href="#open-todos">Todo</a>
+          <a href="#info" data-info-panel="info-facts">確認</a>
+          <a href="#info" data-info-panel="info-open-todos">Todo</a>
         </div>
       </nav>
 
@@ -30,44 +30,12 @@
         </p>
         <div class="hero__actions">
           <a class="button button--primary" href="#days">日程を見る</a>
-          <a class="button button--ghost" href="#prep">持ち物を見る</a>
+          <a class="button button--ghost" href="#info" data-info-panel="info-checklist">持ち物を見る</a>
         </div>
       </div>
     </header>
 
     <main>
-      <section class="section overview" aria-label="旅行概要">
-        <div class="section__inner overview__grid">
-          <article class="panel">
-            <span class="panel__label">Base</span>
-            <h2>宿の基準地点</h2>
-            <p>韓国 ソウル特別市 麻浦区 東橋洞 周辺</p>
-            <p class="small">経路は弘大入口駅・東橋洞周辺を起点にしています。</p>
-          </article>
-          <article class="panel">
-            <span class="panel__label">Rule</span>
-            <h2>旅の組み方</h2>
-            <p>移動は実時間より少し長めに取り、予定はすべて15分単位で作成。</p>
-            <p class="small">フライト時刻と施術先が確定したら、その部分だけ前倒し調整。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="critical">
-        <div class="section__inner prep-grid">
-          <article class="panel">
-            <span class="panel__label">TODO Fields</span>
-            <h2>旅行前に埋める情報</h2>
-            <dl class="fact-list" id="keyFactList"></dl>
-          </article>
-          <article class="panel">
-            <span class="panel__label">Guide Memo</span>
-            <h2>現地で効く注意点</h2>
-            <ul class="memo-list" id="guideMemoList"></ul>
-          </article>
-        </div>
-      </section>
-
       <section class="section" id="days">
         <div class="section__inner">
           <div class="section-heading">
@@ -80,12 +48,12 @@
               <span id="dayDate"></span>
               <h3 id="dayTitle"></h3>
               <p id="dayTheme"></p>
-              <div class="day-routes" id="dayRoutes">
-                <h4>この日の経路</h4>
+              <details class="day-routes" id="dayRoutes">
+                <summary>この日の経路</summary>
                 <div class="day-route-all-list" id="dayRouteAllList"></div>
                 <p class="day-routes__hint" id="dayRouteHint"></p>
                 <div class="day-route-list" id="dayRouteList"></div>
-              </div>
+              </details>
               <ul id="dayNotes"></ul>
             </div>
             <ol class="timeline" id="timeline"></ol>
@@ -94,33 +62,183 @@
         </div>
       </section>
 
-      <section class="section" id="prep">
+      <section class="section info-hub" id="info">
         <div class="section__inner prep-grid">
-          <article class="panel">
+          <div class="section-heading panel--wide">
+            <span class="eyebrow">Trip Menu</span>
+            <h2>旅の情報</h2>
+          </div>
+          <div class="info-tabs panel--wide" id="infoTabs" role="tablist" aria-label="旅行情報">
+            <button
+              class="info-tab"
+              id="info-tab-overview"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="info-overview"
+              data-panel="info-overview"
+            >
+              概要
+            </button>
+            <button
+              class="info-tab"
+              id="info-tab-facts"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="info-facts"
+              data-panel="info-facts"
+            >
+              確認事項
+            </button>
+            <button
+              class="info-tab"
+              id="info-tab-memos"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="info-memos"
+              data-panel="info-memos"
+            >
+              現地メモ
+            </button>
+            <button
+              class="info-tab"
+              id="info-tab-checklist"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="info-checklist"
+              data-panel="info-checklist"
+            >
+              持ち物
+            </button>
+            <button
+              class="info-tab"
+              id="info-tab-reserve"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="info-reserve"
+              data-panel="info-reserve"
+            >
+              事前準備
+            </button>
+            <button
+              class="info-tab"
+              id="info-tab-wants"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="info-wants"
+              data-panel="info-wants"
+            >
+              回収リスト
+            </button>
+            <button
+              class="info-tab"
+              id="info-tab-open-todos"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="info-open-todos"
+              data-panel="info-open-todos"
+            >
+              Todo
+            </button>
+          </div>
+
+          <section
+            class="info-panel overview__grid panel--wide"
+            id="info-overview"
+            role="tabpanel"
+            aria-labelledby="info-tab-overview"
+          >
+            <article class="panel">
+              <span class="panel__label">Base</span>
+              <h2>宿の基準地点</h2>
+              <p>韓国 ソウル特別市 麻浦区 東橋洞 周辺</p>
+              <p class="small">経路は弘大入口駅・東橋洞周辺を起点にしています。</p>
+            </article>
+            <article class="panel">
+              <span class="panel__label">Rule</span>
+              <h2>旅の組み方</h2>
+              <p>移動は実時間より少し長めに取り、予定はすべて15分単位で作成。</p>
+              <p class="small">フライト時刻と施術先が確定したら、その部分だけ前倒し調整。</p>
+            </article>
+          </section>
+
+          <article
+            class="panel info-panel panel--wide"
+            id="info-facts"
+            role="tabpanel"
+            aria-labelledby="info-tab-facts"
+            hidden
+          >
+            <span class="panel__label">TODO Fields</span>
+            <h2>旅行前に埋める情報</h2>
+            <dl class="fact-list" id="keyFactList"></dl>
+          </article>
+
+          <article
+            class="panel info-panel panel--wide"
+            id="info-memos"
+            role="tabpanel"
+            aria-labelledby="info-tab-memos"
+            hidden
+          >
+            <span class="panel__label">Guide Memo</span>
+            <h2>現地で効く注意点</h2>
+            <ul class="memo-list" id="guideMemoList"></ul>
+          </article>
+
+          <article
+            class="panel info-panel panel--wide"
+            id="info-checklist"
+            role="tabpanel"
+            aria-labelledby="info-tab-checklist"
+            hidden
+          >
             <span class="panel__label">Checklist</span>
             <h2>必ず持つもの</h2>
             <ul class="check-list" id="checkList"></ul>
           </article>
-          <article class="panel">
+
+          <article
+            class="panel info-panel panel--wide"
+            id="info-reserve"
+            role="tabpanel"
+            aria-labelledby="info-tab-reserve"
+            hidden
+          >
             <span class="panel__label">Reserve</span>
             <h2>事前にやること</h2>
             <ul class="todo-list" id="todoList"></ul>
           </article>
-          <article class="panel panel--wide">
+
+          <article
+            class="panel info-panel panel--wide"
+            id="info-wants"
+            role="tabpanel"
+            aria-labelledby="info-tab-wants"
+            hidden
+          >
             <span class="panel__label">Wishlist</span>
             <h2>行きたいこと回収</h2>
             <ul class="want-list" id="wantList"></ul>
           </article>
-        </div>
-      </section>
 
-      <section class="section" id="open-todos">
-        <div class="section__inner">
-          <div class="section-heading">
+          <section
+            class="info-panel panel--wide"
+            id="info-open-todos"
+            role="tabpanel"
+            aria-labelledby="info-tab-open-todos"
+            hidden
+          >
             <span class="eyebrow">Open TODO</span>
             <h2>未消化Todoリスト</h2>
-          </div>
-          <div class="open-todo-list" id="openTodoList"></div>
+            <div class="open-todo-list" id="openTodoList"></div>
+          </section>
         </div>
       </section>
     </main>
@@ -130,7 +248,7 @@
       <a href="#top">上へ戻る</a>
     </footer>
 
-    <script src="assets/itinerary.js?v=20260616-naver-app-routes" defer></script>
-    <script src="assets/app.js?v=20260616-naver-app-routes" defer></script>
+    <script src="assets/itinerary.js?v=20260616-compact-tabs" defer></script>
+    <script src="assets/app.js?v=20260616-compact-tabs" defer></script>
   </body>
 </html>

@@ -42,11 +42,14 @@ function checkContent() {
   const html = read("index.html");
   assert(html.includes("韓国男旅のしおり"), "タイトルがありません");
   assert(html.includes("dayTabs"), "日別タブがありません");
+  assert(html.includes("infoTabs"), "旅行情報タブがありません");
+  assert(html.includes("info-panel"), "旅行情報パネルがありません");
   assert(html.includes("keyFactList"), "未確定情報のTODO表示欄がありません");
   assert(html.includes("guideMemoList"), "現地メモ表示欄がありません");
   assert(html.includes("openTodoList"), "未消化Todoリストがありません");
   assert(html.includes("dayRouteAllList"), "1日分の一括経路リンクがありません");
   assert(html.includes("dayRouteList"), "日別経路リストがありません");
+  assert(html.includes('<details class="day-routes"'), "日別経路が折りたたみではありません");
   assert(html.includes("wantList"), "行きたいこと回収リストがありません");
   assert(!html.includes('id="friends"'), "別行動が独立セクションに戻っています");
 }
