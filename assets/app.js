@@ -197,6 +197,47 @@ function renderWantList() {
   data.wantList.forEach((item) => list.appendChild(wantItem(item)));
 }
 
+function renderFacts() {
+  const list = $("#keyFactList");
+  list.innerHTML = "";
+  data.keyFacts.forEach((item) => list.appendChild(factItem(item)));
+}
+
+function factItem(item) {
+  const row = document.createElement("div");
+  row.innerHTML = `<dt>${item.label}</dt><dd><strong>${item.value}</strong><span>${item.detail}</span></dd>`;
+  return row;
+}
+
+function renderMemos() {
+  const list = $("#guideMemoList");
+  list.innerHTML = "";
+  data.guideMemos.forEach((item) => list.appendChild(memoListItem(item)));
+}
+
+function memoListItem(item) {
+  const li = document.createElement("li");
+  li.innerHTML = `<strong>${item.title}</strong><span>${item.detail}</span>`;
+  return li;
+}
+
+function renderOpenTodos() {
+  const list = $("#openTodoList");
+  list.innerHTML = "";
+  data.openTodos.forEach((group) => list.appendChild(openTodoGroup(group)));
+}
+
+function openTodoGroup(group) {
+  const article = document.createElement("article");
+  article.className = "open-todo-card";
+  article.innerHTML = `<h3>${group.category}</h3><ul>${openTodoItems(group.items)}</ul>`;
+  return article;
+}
+
+function openTodoItems(items) {
+  return items.map((item) => `<li>${item}</li>`).join("");
+}
+
 function wantItem([name, timing]) {
   const item = document.createElement("li");
   item.innerHTML = `<strong>${name}</strong><span>${timing}</span>`;
@@ -211,9 +252,12 @@ function simpleItem(text) {
 
 function init() {
   renderTabs();
+  renderFacts();
+  renderMemos();
   renderSimpleList("#checkList", data.checkList);
   renderSimpleList("#todoList", data.todoList);
   renderWantList();
+  renderOpenTodos();
   showDay(data.days[0].id);
 }
 

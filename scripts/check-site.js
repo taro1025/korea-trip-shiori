@@ -42,6 +42,9 @@ function checkContent() {
   const html = read("index.html");
   assert(html.includes("韓国男旅のしおり"), "タイトルがありません");
   assert(html.includes("dayTabs"), "日別タブがありません");
+  assert(html.includes("keyFactList"), "未確定情報のTODO表示欄がありません");
+  assert(html.includes("guideMemoList"), "現地メモ表示欄がありません");
+  assert(html.includes("openTodoList"), "未消化Todoリストがありません");
   assert(html.includes("dayRouteAll"), "1日分の一括経路リンクがありません");
   assert(html.includes("dayRouteList"), "日別経路リストがありません");
   assert(html.includes("wantList"), "行きたいこと回収リストがありません");
@@ -97,6 +100,16 @@ function checkWantList(trip) {
   assert(trip.wantList.length >= 14, "行きたいこと回収リストが不足しています");
 }
 
+function checkTravelGuideData(trip) {
+  const text = JSON.stringify(trip);
+  const required = ["e-Arrival Card", "1330", "NAVER Map", "KakaoMap", "海外旅行保険"];
+  required.forEach((name) => assert(text.includes(name), `${name} がありません`));
+  assert(trip.keyFacts.length >= 6, "未確定情報のTODO欄が不足しています");
+  assert(trip.keyFacts.every((item) => item.value === "TODO"), "TODO欄の値はTODOにしてください");
+  assert(trip.guideMemos.length >= 6, "現地メモが不足しています");
+  assert(trip.openTodos.length >= 3, "未消化Todoグループが不足しています");
+}
+
 function routeStops(events) {
   const stops = events.flatMap((event) => [event.from, event.to].filter(Boolean));
   return stops.filter((stop, index) => stop !== stops[index - 1]);
@@ -120,6 +133,7 @@ function checkData() {
   checkFriendRoutes(trip.days);
   checkRouteUrlFormat();
   checkWantList(trip);
+  checkTravelGuideData(trip);
   checkFullDayRoutes(trip.days);
 }
 

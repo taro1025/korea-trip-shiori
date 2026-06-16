@@ -414,7 +414,8 @@ a {
 
 .check-list,
 .todo-list,
-.want-list {
+.want-list,
+.memo-list {
   display: grid;
   gap: 10px;
   margin: 18px 0 0;
@@ -424,12 +425,55 @@ a {
 
 .check-list li,
 .todo-list li,
-.want-list li {
+.want-list li,
+.memo-list li {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0.75rem 0.9rem;
   background: #fbfcff;
   font-weight: 800;
+}
+
+.fact-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.fact-list div {
+  display: grid;
+  gap: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.8rem 0.9rem;
+  background: #fbfcff;
+}
+
+.fact-list dt {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.fact-list dd {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.fact-list strong {
+  color: var(--red-dark);
+  font-size: 1rem;
+}
+
+.fact-list span,
+.memo-list span {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.55;
 }
 
 .want-list {
@@ -445,6 +489,39 @@ a {
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 750;
+}
+
+.open-todo-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.open-todo-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.open-todo-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.open-todo-card ul {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.open-todo-card li {
+  padding-left: 0.15rem;
+  font-weight: 760;
 }
 
 .footer {
@@ -488,6 +565,7 @@ a {
   .overview__grid,
   .prep-grid,
   .want-list,
+  .open-todo-list,
   .day-panel,
   .day-extra {
     grid-template-columns: 1fr;

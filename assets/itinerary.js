@@ -1,20 +1,64 @@
 window.TRIP_DATA = {
   base: "Donggyo-dong, Mapo-gu, Seoul",
+  keyFacts: [
+    fact("到着便", "TODO", "便名、仁川T1/T2、到着時刻、空港から弘大までの開始時刻"),
+    fact("帰国便", "TODO", "便名、出発時刻、T1/T2、3時間前到着から逆算した宿出発時刻"),
+    fact("宿", "TODO", "ホテル名、韓国語住所、電話番号、予約番号、荷物預け可否"),
+    fact("施術クリニック", "TODO", "院名、韓国語住所、予約時刻、術後連絡先、支払い方法"),
+    fact("DMZツアー", "TODO", "催行会社、集合場所、集合時間、緊急連絡先、本人確認書類"),
+    fact("海外旅行保険", "TODO", "証券番号、24時間窓口、キャッシュレス診療可否"),
+  ],
+  guideMemos: [
+    memo("入国", "2026年はK-ETA免除対象でも、e-Arrival Card対象確認と宿泊先住所の控えを準備。"),
+    memo("緊急", "警察112、消防・救急119、医療案内1339、観光通訳1330をすぐ見られる状態にする。"),
+    memo("DMZ", "パスポートまたは有効な身分証を携帯。写真制限と催行変更がある前提で動く。"),
+    memo("7月の気候", "ソウルは高温多湿で雨が強い時期。傘、汗対策、屋内代替を用意する。"),
+    memo("地図", "Google Mapsは補助。NAVER Map / KakaoMapと韓国語住所を併用する。"),
+    memo("施術", "前夜の深酒、術後の飲酒・サウナ・激しい運動は避け、クリニック指示を優先。"),
+  ],
   checkList: [
     "パスポート",
+    "e-Arrival Card控え / K-ETA承認控え",
     "eSIM / Wi-Fi",
     "クレカ・現金・T-money",
     "モバイルバッテリー",
+    "海外旅行保険の証券番号・緊急窓口",
+    "NAVER Map / KakaoMap",
+    "折りたたみ傘・日焼け止め・汗拭きシート",
     "常備薬・術後用マスク",
+    "施術後用サングラス",
     "ジムジルバン用の替え下着",
     "DMZツアー予約確認",
   ],
   todoList: [
+    "e-Arrival Card対象確認と宿泊先住所の控えを準備",
+    "宿の正式名称、韓国語住所、電話番号を確定",
     "山清炭火ガーデンをCatchTableで予約",
     "DMZツアーの集合場所と集合時間を確定",
     "美容院、ポテンツァ、二重整形の予約を確定",
     "施術クリニックの住所と術前注意を確認",
+    "海外旅行保険と現地緊急連絡先を控える",
+    "NAVER Map / KakaoMapに主要地点を保存",
     "帰国便のターミナルと空港到着目標を確認",
+  ],
+  openTodos: [
+    todoGroup("最優先", [
+      "到着便の便名、ターミナル、到着時刻を入力する",
+      "帰国便の便名、出発時刻、ターミナルを入力する",
+      "宿の正式名称、韓国語住所、電話番号、予約番号を入力する",
+      "施術クリニックの院名、住所、予約時刻、術後連絡先を入力する",
+    ]),
+    todoGroup("予約・安全", [
+      "DMZツアーの催行会社、集合場所、集合時間、緊急連絡先を入力する",
+      "山清炭火、美容院、施術の予約番号を控える",
+      "海外旅行保険の証券番号と24時間窓口を入力する",
+      "カジノ上限金額と深夜タクシー方針を決める",
+    ]),
+    todoGroup("現地UX", [
+      "主要地点をNAVER Map / KakaoMapに保存する",
+      "雨天・猛暑時の屋内代替プランを日別に入れる",
+      "同行者とはぐれた時の集合場所を決める",
+    ]),
   ],
   wantList: [
     ["DMZ（非武装地帯）", "7/18 早朝ツアー"],
@@ -39,7 +83,7 @@ window.TRIP_DATA = {
       date: "2026年7月16日（木）",
       title: "夜遊びアクセル全開",
       theme: "江南エリア攻略DAY。初日は移動疲れを見て、食事後に夜の予定へ。",
-      notes: ["飲酒OK日", "山清炭火は予約推奨", "深夜移動はタクシー優先"],
+      notes: ["飲酒OK日", "山清炭火は予約推奨", "深夜移動はタクシー優先", "到着便確定後に空港から弘大までの導線を追加"],
       events: [
         event("15:00", "弘大入口駅 到着", "宿へ移動開始", "15分移動", "Hongik University Station, Seoul", "Donggyo-dong, Mapo-gu, Seoul", "walking"),
         event("15:15", "宿 到着", "荷物を置いてチェックイン準備", "", "Donggyo-dong, Mapo-gu, Seoul"),
@@ -84,8 +128,8 @@ window.TRIP_DATA = {
       label: "7/18",
       date: "2026年7月18日（土）",
       title: "DMZ ＆ 漢江チル",
-      theme: "早朝DMZ、夕方は漢江。夜は弘大クラブで最後の飲酒ナイト。",
-      notes: ["パスポート必須", "DMZはツアー時間に合わせて調整", "夜は体調優先"],
+      theme: "早朝DMZ、夕方は漢江。翌日の施術に備え、夜は短時間で切り上げる。",
+      notes: ["パスポート必須", "DMZはツアー時間に合わせて調整", "写真制限と催行変更に注意", "施術前夜なので深酒しない"],
       events: [
         event("05:30", "起床", "パスポート・水・軽食を確認", "", "Donggyo-dong, Mapo-gu, Seoul"),
         event("06:00", "宿 出発", "弘大集合場所へ", "15分移動", "Donggyo-dong, Mapo-gu, Seoul", "Hongik University Station, Seoul", "walking"),
@@ -100,7 +144,8 @@ window.TRIP_DATA = {
         event("18:15", "楊花漢江公園", "漢江ラーメンとチキンで夕涼み", "", "Yanghwa Hangang Park, Seoul"),
         event("20:30", "漢江 出発", "弘大へ戻って夜準備", "15分移動", "Yanghwa Hangang Park, Seoul", "Hongdae Street, Seoul", "driving"),
         event("21:00", "弘大 夜準備", "クラブ前に水分補給", "", "Hongdae Street, Seoul"),
-        event("22:30", "弘大クラブ", "3人で朝まで飲める最後の夜。撤退時間は体調で判断", "", "Hongdae Club Street, Seoul"),
+        event("22:30", "弘大クラブ", "短時間。7/19施術前なので深酒せず、睡眠時間を確保", "", "Hongdae Club Street, Seoul"),
+        event("00:00", "宿 帰還", "水分補給、洗顔、施術前の注意事項を再確認", "", "Donggyo-dong, Mapo-gu, Seoul"),
       ],
     },
     {
@@ -109,7 +154,7 @@ window.TRIP_DATA = {
       date: "2026年7月19日（日）",
       title: "ポテンツァ・二重整形 ＆ 別行動",
       theme: "13:00〜17:00は施術コアタイム。術後は飲酒なしで、刺激の少ない夕食へ。",
-      notes: ["あなたは飲酒NG", "ポテンツァと二重整形の注意事項を確認", "夕食は無理しない"],
+      notes: ["あなたは飲酒NG", "ポテンツァと二重整形の注意事項を確認", "術後はサウナ・激しい運動を避ける", "夕食は無理しない"],
       events: [
         event("09:30", "起床・荷造り", "帰国前の荷物をまとめる", "", "Donggyo-dong, Mapo-gu, Seoul"),
         event("10:30", "弘大ブランチ", "刺激の強いものは避ける", "15分移動", "Donggyo-dong, Mapo-gu, Seoul", "Hongdae Street, Seoul", "walking"),
@@ -152,7 +197,7 @@ window.TRIP_DATA = {
       date: "2026年7月20日（月）",
       title: "早朝帰国",
       theme: "弘大入口駅からAREXで仁川国際空港へ。便の3時間前到着を目標。",
-      notes: ["帰国便の時刻で前倒し", "T1/T2を確認", "忘れ物は出発前に再確認"],
+      notes: ["帰国便の時刻で前倒し", "T1/T2を確認", "仁川空港は3時間前到着目標", "忘れ物は出発前に再確認"],
       events: [
         event("04:45", "起床", "忘れ物チェック、チェックアウト準備", "", "Donggyo-dong, Mapo-gu, Seoul"),
         event("05:15", "宿 出発", "弘大入口駅へ", "15分移動", "Donggyo-dong, Mapo-gu, Seoul", "Hongik University Station, Seoul", "walking"),
@@ -166,4 +211,16 @@ window.TRIP_DATA = {
 
 function event(time, title, detail, move, from, to = "", mode = "transit") {
   return { time, title, detail, move, from, to, mode };
+}
+
+function fact(label, value, detail) {
+  return { label, value, detail };
+}
+
+function memo(title, detail) {
+  return { title, detail };
+}
+
+function todoGroup(category, items) {
+  return { category, items };
 }

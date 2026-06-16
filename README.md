@@ -12,6 +12,9 @@
 - 現在地に依存しない1日分のGoogle Maps一括経路リンク
 - Google Mapsで線が出やすい2地点ずつの補助経路リンク
 - 7月19日の日程内に友人2人が動く別行動ルート
+- 到着便・宿・施術先など未確定情報のTODO表示欄
+- 入国、緊急連絡、DMZ、7月気候、地図、施術の現地メモ
+- 未消化Todoリスト
 - 行きたいことの回収リスト
 - 持ち物と事前予約チェック
 
@@ -26,14 +29,20 @@ python3 -m http.server 4173
 
 ## 編集する場所
 
-日程、場所、Google Mapsの起点・目的地は `assets/itinerary.js` の `window.TRIP_DATA` を編集します。
+日程、場所、TODO、Google Mapsの起点・目的地は `assets/itinerary.js` の `window.TRIP_DATA` を編集します。
 1日分の一括経路は、その日の最初の地点を `origin`、最後の地点を `destination`、途中地点を `waypoints` にして開きます。
 現在地が日本でも現在地起点にはしません。
 Google Maps側の制限により、スマホで経由地が省略される場合は2地点ずつの補助経路リンクを使います。
 
+未確定情報は `keyFacts` に `TODO` として表示しています。
+未消化Todoは `openTodos` を編集してください。
+旅行前チェックは `todoList`、持ち物は `checkList`、現地注意点は `guideMemos` を編集します。
+
 フライト時刻、施術クリニック、宿の正確な住所が確定したら、以下を更新してください。
 
 - `base`
+- `keyFacts`
+- `openTodos`
 - 7月16日の到着時刻
 - 7月19日のクリニック目的地
 - 7月20日の空港到着目標
@@ -53,6 +62,11 @@ https://taro1025.github.io/korea-trip-shiori/
 - Paradise Casino Walkerhill: https://www.paradisecasino.co.kr/
 - 楊花漢江公園: https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=91221
 - Nソウルタワー: https://www.nseoultower.co.kr/eng/
+- K-ETA免除延長: https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=251923
+- e-Arrival Card: https://www.e-arrivalcard.go.kr/
+- 韓国緊急連絡先: https://english.visitkorea.or.kr/svc/faq/faqMainView.do?menuSn=404&pstSn=94
+- 仁川空港出発案内: https://www.airport.kr/ap_en/6636/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGYXBfZW4lMkY5MzclMkYxMzgxOTglMkZhcnRjbFZpZXcuZG8lM0Y%3D
+- ソウルの気候: https://english.seoul.go.kr/seoul-views/meaning-of-seoul/3-climate/
 - DMZツアー注意点: https://www.timetravelturtle.com/south-korea/dmz-tour-from-seoul/
 - Google Maps URLs: https://developers.google.com/maps/documentation/urls/get-started
 - 画像: https://unsplash.com/s/photos/gangnam

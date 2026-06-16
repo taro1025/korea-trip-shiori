@@ -17,6 +17,7 @@
         <div class="nav__links">
           <a href="#days">日程</a>
           <a href="#prep">準備</a>
+          <a href="#open-todos">Todo</a>
         </div>
       </nav>
 
@@ -48,6 +49,21 @@
             <h2>旅の組み方</h2>
             <p>移動は実時間より少し長めに取り、予定はすべて15分単位で作成。</p>
             <p class="small">フライト時刻と施術先が確定したら、その部分だけ前倒し調整。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="critical">
+        <div class="section__inner prep-grid">
+          <article class="panel">
+            <span class="panel__label">TODO Fields</span>
+            <h2>旅行前に埋める情報</h2>
+            <dl class="fact-list" id="keyFactList"></dl>
+          </article>
+          <article class="panel">
+            <span class="panel__label">Guide Memo</span>
+            <h2>現地で効く注意点</h2>
+            <ul class="memo-list" id="guideMemoList"></ul>
           </article>
         </div>
       </section>
@@ -97,6 +113,16 @@
             <h2>行きたいこと回収</h2>
             <ul class="want-list" id="wantList"></ul>
           </article>
+        </div>
+      </section>
+
+      <section class="section" id="open-todos">
+        <div class="section__inner">
+          <div class="section-heading">
+            <span class="eyebrow">Open TODO</span>
+            <h2>未消化Todoリスト</h2>
+          </div>
+          <div class="open-todo-list" id="openTodoList"></div>
         </div>
       </section>
     </main>
