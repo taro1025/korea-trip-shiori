@@ -17,6 +17,7 @@
 - 到着便・宿・施術先など未確定情報のTODO表示欄を情報タブで表示
 - 入国、緊急連絡、DMZ、7月気候、地図、施術の現地メモを情報タブで表示
 - 未消化Todoリスト、行きたいこと、持ち物、事前予約チェックを情報タブで表示
+- 韓国旅行イラストのfaviconとApple Touch Iconを設定
 
 ## ローカル確認
 
@@ -38,6 +39,7 @@ AndroidではNaver Mapアプリを開きやすい `intent://` 形式に自動変
 未消化Todoは `openTodos` を編集してください。
 旅行前チェックは `todoList`、持ち物は `checkList`、現地注意点は `guideMemos` を編集します。
 表示上は `index.html` の `infoTabs` 配下にタブとしてまとめています。
+faviconは `assets/icons/` 配下のPNGを `index.html` のheadで参照しています。
 
 フライト時刻、施術クリニック、宿の正確な住所が確定したら、以下を更新してください。
 
