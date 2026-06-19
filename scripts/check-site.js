@@ -61,8 +61,14 @@ function checkImage() {
 
 function checkQuarterHours(events) {
   events.forEach((event) => {
+    if (isExactTravelTime(event)) return;
     assert(minutes(event.time) % 15 === 0, `${event.time} が15分単位ではありません`);
   });
+}
+
+function isExactTravelTime(event) {
+  const text = `${event.title} ${event.detail}`;
+  return text.includes("成田") || text.includes("出発3時間前");
 }
 
 function checkRoutes(events) {
@@ -109,9 +115,23 @@ function checkTravelGuideData(trip) {
   const required = ["e-Arrival Card", "1330", "NAVER Map", "KakaoMap", "海外旅行保険"];
   required.forEach((name) => assert(text.includes(name), `${name} がありません`));
   assert(trip.keyFacts.length >= 6, "未確定情報のTODO欄が不足しています");
-  assert(trip.keyFacts.every((item) => item.value === "TODO"), "TODO欄の値はTODOにしてください");
+  assert(trip.keyFacts.some((item) => item.value === "TODO"), "未確定TODOがありません");
+  checkFlightFacts(trip);
   assert(trip.guideMemos.length >= 6, "現地メモが不足しています");
   assert(trip.openTodos.length >= 3, "未消化Todoグループが不足しています");
+}
+
+function checkFlightFacts(trip) {
+  const arrival = keyFact(trip, "到着便");
+  const departure = keyFact(trip, "帰国便");
+  assert(arrival.value.includes("12:30") && arrival.value.includes("15:10"), "到着便の時刻が不足しています");
+  assert(departure.value.includes("07:25") && departure.value.includes("09:50"), "帰国便の時刻が不足しています");
+}
+
+function keyFact(trip, label) {
+  const item = trip.keyFacts.find((fact) => fact.label === label);
+  assert(item, `${label} がありません`);
+  return item;
 }
 
 function routeStops(events) {
