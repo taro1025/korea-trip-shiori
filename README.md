@@ -13,11 +13,12 @@
 - Naver Mapアプリで開く、現在地に依存しない1日分の経路リンク
 - Naver Mapの経由地上限に合わせた分割経路リンク
 - 日別の経路リンクは折りたたみで表示
-- 7月19日の日程内に友人2人が動く別行動ルート
-- 到着便・宿・施術先など未確定情報のTODO表示欄を情報タブで表示
+- 7月17日 09:00〜13:00のプロミス整形外科と、その間の同行者別行動ルート
+- 到着便・宿・施術内容など未確定情報のTODO表示欄を情報タブで表示
 - 入国、緊急連絡、DMZ、7月気候、地図、施術の現地メモを情報タブで表示
 - 未消化Todoリスト、行きたいこと、持ち物、事前予約チェックを情報タブで表示
 - 7月16日 成田12:30発/仁川15:10着、7月20日 仁川07:25発/成田09:50着を反映
+- 画像案を基に、7月17日を美容・聖水・漢江、7月18日をDMZ・カジノ、7月19日を広蔵市場・明洞・Nソウルタワーとして構成
 - 韓国旅行イラストのfaviconとApple Touch Iconを設定
 
 ## ローカル確認
@@ -42,13 +43,13 @@ AndroidではNaver Mapアプリを開きやすい `intent://` 形式に自動変
 表示上は `index.html` の `infoTabs` 配下にタブとしてまとめています。
 faviconは `assets/icons/` 配下のPNGを `index.html` のheadで参照しています。
 
-フライトの便名・ターミナル、施術クリニック、宿の正確な住所が確定したら、以下を更新してください。
+フライトの便名・ターミナル、宿の正確な住所、施術内容が確定したら、以下を更新してください。
 
 - `base`
 - `keyFacts`
 - `openTodos`
 - 7月16日の到着便名、仁川空港ターミナル
-- 7月19日のクリニック目的地
+- 7月17日のクリニック予約番号、施術内容、術後連絡先
 - 7月20日の帰国便名、仁川空港ターミナル、早朝移動手段
 
 ## 公開
@@ -62,6 +63,7 @@ https://taro1025.github.io/korea-trip-shiori/
 ## 参考情報
 
 - 山清炭火ガーデン: https://www.catchtable.net/ja-JP/shop/sancheongstar
+- プロミス整形外科: https://jp.promiseps.co.kr/
 - 広蔵市場: https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=106345
 - Paradise Casino Walkerhill: https://www.paradisecasino.co.kr/
 - 楊花漢江公園: https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=91221

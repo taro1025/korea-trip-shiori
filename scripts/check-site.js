@@ -89,7 +89,7 @@ function checkCasino(days) {
 function checkFriendRoutes(days) {
   const daysWithRoutes = days.filter((day) => day.friendRoutes?.length);
   assert(daysWithRoutes.length === 1, "別行動ルートは1日だけにしてください");
-  assert(daysWithRoutes[0].id === "day4", "別行動ルートは7/19に置いてください");
+  assert(daysWithRoutes[0].id === "day2", "別行動ルートは7/17に置いてください");
 }
 
 function checkRouteUrlFormat() {
@@ -104,10 +104,19 @@ function checkRouteUrlFormat() {
 }
 
 function checkWantList(trip) {
-  const required = ["DMZ", "サンナクジ", "ジムジルバン", "ポテンツァ", "二重整形", "美容院"];
+  const required = ["DMZ", "サンナクジ", "ジムジルバン", "プロミス整形外科", "聖水", "美容院"];
   const text = JSON.stringify(trip);
   required.forEach((name) => assert(text.includes(name), `${name} がありません`));
   assert(trip.wantList.length >= 14, "行きたいこと回収リストが不足しています");
+}
+
+function checkClinicSchedule(trip) {
+  const clinic = keyFact(trip, "施術クリニック");
+  const day = trip.days.find((item) => item.id === "day2");
+  const text = JSON.stringify(day);
+  assert(clinic.value.includes("7/17 09:00〜13:00"), "クリニック確定時刻が不足しています");
+  assert(text.includes("プロミス整形外科"), "7/17にプロミス整形外科がありません");
+  assert(text.includes('"09:00"') && text.includes('"13:00"'), "クリニック滞在時間が不正です");
 }
 
 function checkTravelGuideData(trip) {
@@ -163,6 +172,7 @@ function checkData() {
   checkRouteUrlFormat();
   checkWantList(trip);
   checkTravelGuideData(trip);
+  checkClinicSchedule(trip);
   checkPlaceCoordinates(trip);
   checkFullDayRoutes(trip.days);
 }
