@@ -264,7 +264,7 @@ function renderDayExtra(routes) {
 function extraHeading() {
   const heading = document.createElement("div");
   heading.className = "day-extra__heading";
-  heading.innerHTML = "<span>Friend Plan</span><h4>クリニック中の同行者別行動</h4>";
+  heading.innerHTML = "<span>Clinic Plan</span><h4>施術する人のスケジュール</h4>";
   return heading;
 }
 
