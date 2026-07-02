@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
-    <link rel="stylesheet" href="assets/styles.css?v=20260616-compact-tabs" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260702-ux" />
   </head>
   <body>
     <header class="hero" id="top">
@@ -21,6 +21,7 @@
           <a href="#days">日程</a>
           <a href="#info" data-info-panel="info-facts">確認</a>
           <a href="#info" data-info-panel="info-open-todos">Todo</a>
+          <button type="button" class="theme-toggle" id="themeToggle" aria-label="配色を切り替え">🌙</button>
         </div>
       </nav>
 
@@ -46,6 +47,7 @@
             <h2>1日ずつ見る</h2>
           </div>
           <div class="day-tabs" id="dayTabs" role="tablist" aria-label="日程"></div>
+          <div class="now-bar" id="nowBar" hidden></div>
           <article class="day-panel" aria-live="polite">
             <div class="day-panel__summary">
               <span id="dayDate"></span>
@@ -159,9 +161,13 @@
           >
             <article class="panel">
               <span class="panel__label">Base</span>
-              <h2>宿の基準地点</h2>
-              <p>韓国 ソウル特別市 麻浦区 東橋洞 周辺</p>
-              <p class="small">経路は弘大入口駅・東橋洞周辺を起点にしています。</p>
+              <h2>宿</h2>
+              <p id="hotelAddress">13 Seogang-ro 13-gil, Mapo-gu, Seoul 04061</p>
+              <div class="panel__actions">
+                <button type="button" class="chip-button" id="copyHotel">住所をコピー</button>
+                <a class="chip-button chip-button--go" id="hotelMap" href="#" target="_blank" rel="noreferrer">Naverで開く</a>
+              </div>
+              <p class="small">経路は弘大入口駅・宿周辺を起点にしています。</p>
             </article>
             <article class="panel">
               <span class="panel__label">Rule</span>
@@ -205,6 +211,7 @@
           >
             <span class="panel__label">Guide Memo</span>
             <h2>現地で効く注意点</h2>
+            <div class="emergency-bar" id="emergencyBar" aria-label="緊急連絡先"></div>
             <ul class="memo-list" id="guideMemoList"></ul>
           </article>
 
@@ -259,12 +266,29 @@
       </section>
     </main>
 
+    <nav class="quickbar" aria-label="クイック操作">
+      <button type="button" class="quickbar__item" id="qbRoute">
+        <span aria-hidden="true">🗺️</span>今日の経路
+      </button>
+      <a
+        class="quickbar__item"
+        href="https://walica.jp/group/01KW0VW6YE56PYZDWR7VTVYTQ8"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span aria-hidden="true">💴</span>割り勘
+      </a>
+      <a class="quickbar__item quickbar__item--alert" href="#info" data-info-panel="info-memos" id="qbEmergency">
+        <span aria-hidden="true">🆘</span>緊急
+      </a>
+    </nav>
+
     <footer class="footer">
       <p>韓国男旅のしおり</p>
       <a href="#top">上へ戻る</a>
     </footer>
 
-    <script src="assets/itinerary.js?v=20260624-itinerary" defer></script>
-    <script src="assets/app.js?v=20260624-itinerary" defer></script>
+    <script src="assets/itinerary.js?v=20260702-ux" defer></script>
+    <script src="assets/app.js?v=20260702-ux" defer></script>
   </body>
 </html>

@@ -1,5 +1,9 @@
 const data = window.TRIP_DATA;
 const $ = (selector) => document.querySelector(selector);
+const DAY_DATES = ["2026-07-16", "2026-07-17", "2026-07-18", "2026-07-19", "2026-07-20"];
+const KIND_ICON = { transit: "🚇", walking: "🚶", driving: "🚗", clinic: "🏥", meal: "🍽", care: "💆", lodge: "🏨", sight: "📸" };
+const KIND_COLOR = { move: "var(--teal)", clinic: "var(--red)", meal: "var(--gold)", care: "#8a63d2", lodge: "#7a828f", sight: "#2c8a4a" };
+let currentDay = null;
 const MAX_NAVER_WAYPOINTS = 5;
 const MAX_NAVER_ROUTE_STOPS = MAX_NAVER_WAYPOINTS + 2;
 const NAVER_APP_NAME = "https://taro1025.github.io/korea-trip-shiori/";
@@ -140,6 +144,7 @@ function updateInfoTabs(panelId) {
 
 function showDay(dayId) {
   const day = data.days.find((item) => item.id === dayId) || data.days[0];
+  currentDay = day;
   $("#dayDate").textContent = day.date;
   $("#dayTitle").textContent = day.title;
   $("#dayTheme").textContent = day.theme;
@@ -172,18 +177,95 @@ function noteItem(note) {
 function renderTimeline(events) {
   const list = $("#timeline");
   list.innerHTML = "";
-  events.forEach((item) => list.appendChild(timelineItem(item)));
+  const nowIndex = isViewingToday() ? currentSlotIndex(events) : -1;
+  events.forEach((item, index) => list.appendChild(timelineItem(item, index === nowIndex)));
+  renderNowBar(events, nowIndex);
 }
 
-function timelineItem(item) {
+function timelineItem(item, isNow) {
   const li = document.createElement("li");
-  li.innerHTML = timelineHtml(item);
+  const kind = eventKind(item);
+  li.dataset.kind = kind;
+  li.style.setProperty("--kind", KIND_COLOR[kind] || "var(--line)");
+  if (isNow) li.classList.add("is-now");
+  li.innerHTML = timelineHtml(item, kind, isNow);
   return li;
 }
 
-function timelineHtml(item) {
+function timelineHtml(item, kind, isNow) {
   const move = item.move ? `<span class="move">${item.move}</span>` : "";
-  return `<time>${item.time}</time><div><h4>${item.title}</h4><p>${item.detail}</p>${move}${routeLink(item)}</div>`;
+  const nowPill = isNow ? '<span class="now-pill">今ここ</span>' : "";
+  const icon = `<span class="ev-ic" aria-hidden="true">${kindIcon(item, kind)}</span>`;
+  return `<time>${item.time}</time><div><h4>${icon}${item.title}${nowPill}</h4><p>${item.detail}</p>${move}${routeLink(item)}</div>`;
+}
+
+function kindIcon(item, kind) {
+  if (kind === "move") return KIND_ICON[item.mode] || "🚇";
+  return KIND_ICON[kind] || "📍";
+}
+
+function eventKind(item) {
+  if (item.to) return "move";
+  const text = `${item.title} ${item.detail}`;
+  if (/クリニック|整形|施術|受付|プロミス/.test(text)) return "clinic";
+  if (/美容院|マッサージ|チムジルバン|ジムジル/.test(text)) return "care";
+  if (/食|居酒屋|カフェ|市場|ラーメン|屋台|ブランチ|ポチャ/.test(text)) return "meal";
+  if (/起床|準備|チェックイン|チェックアウト|宿|帰還|休養|就寝/.test(text)) return "lodge";
+  return "sight";
+}
+
+function isViewingToday() {
+  return currentDay && currentDay.id === tripTodayId();
+}
+
+function tripTodayId() {
+  const index = DAY_DATES.indexOf(todayIso());
+  return index >= 0 ? data.days[index].id : null;
+}
+
+function todayIso() {
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+function nowMinutes() {
+  const now = new Date();
+  return now.getHours() * 60 + now.getMinutes();
+}
+
+function toMinutes(time) {
+  const [hour, minute] = time.split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+function currentSlotIndex(events) {
+  const now = nowMinutes();
+  let index = -1;
+  events.forEach((item, i) => {
+    if (toMinutes(item.time) <= now) index = i;
+  });
+  return index;
+}
+
+function renderNowBar(events, nowIndex) {
+  const bar = $("#nowBar");
+  if (!isViewingToday()) {
+    bar.hidden = true;
+    return;
+  }
+  bar.hidden = false;
+  bar.innerHTML = nowBarHtml(events[nowIndex], events[nowIndex + 1]);
+}
+
+function nowBarHtml(current, next) {
+  const now = current
+    ? `<span class="now-bar__seg"><b>今</b>${current.time} ${current.title}</span>`
+    : '<span class="now-bar__seg"><b>本日</b>まもなく開始</span>';
+  const upcoming = next
+    ? `<span class="now-bar__seg now-bar__seg--next"><b>次</b>${next.time} ${next.title}</span>`
+    : '<span class="now-bar__seg now-bar__seg--next"><b>次</b>本日は終了</span>';
+  return now + upcoming;
 }
 
 function routeLink(item) {
@@ -290,6 +372,123 @@ function renderSimpleList(selector, items) {
   items.forEach((text) => list.appendChild(simpleItem(text)));
 }
 
+function renderCheckList(selector, items, storeKey) {
+  const list = $(selector);
+  list.innerHTML = "";
+  items.forEach((text) => list.appendChild(checkItem(text, storeKey)));
+}
+
+function checkItem(text, storeKey) {
+  const li = document.createElement("li");
+  const key = `check:${storeKey}:${text}`;
+  const done = readStore(key) === "1";
+  li.className = done ? "is-done" : "";
+  li.innerHTML = `<label><input type="checkbox" ${done ? "checked" : ""} /><span>${text}</span></label>`;
+  const box = li.querySelector("input");
+  box.addEventListener("change", () => toggleCheck(li, box, key));
+  return li;
+}
+
+function toggleCheck(li, box, key) {
+  li.classList.toggle("is-done", box.checked);
+  if (box.checked) writeStore(key, "1");
+  else removeStore(key);
+}
+
+function renderEmergency() {
+  const bar = $("#emergencyBar");
+  if (!bar || !data.emergency) return;
+  bar.innerHTML = "";
+  data.emergency.forEach(([label, num]) => bar.appendChild(emergencyChip(label, num)));
+}
+
+function emergencyChip(label, num) {
+  const link = document.createElement("a");
+  link.className = "emergency-chip";
+  link.href = `tel:${num}`;
+  link.innerHTML = `<span class="emergency-chip__label">${label}</span><span class="emergency-chip__num">${num}</span>`;
+  return link;
+}
+
+function initHotel() {
+  const address = $("#hotelAddress");
+  const map = $("#hotelMap");
+  const copy = $("#copyHotel");
+  if (map) map.href = `https://map.naver.com/p/search/${encode("서강로13길 13")}`;
+  if (copy && address) copy.addEventListener("click", () => copyText(address.textContent.trim(), copy));
+}
+
+function copyText(text, button) {
+  const label = button.textContent;
+  navigator.clipboard?.writeText(text).then(() => flashButton(button, label, "コピーしました"));
+}
+
+function flashButton(button, label, message) {
+  button.textContent = message;
+  setTimeout(() => (button.textContent = label), 1500);
+}
+
+function initQuickbar() {
+  const route = $("#qbRoute");
+  if (route) route.addEventListener("click", openTodayRoute);
+}
+
+function openTodayRoute() {
+  const routes = $("#dayRoutes");
+  if (!routes) return;
+  routes.open = true;
+  routes.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function initTheme() {
+  const saved = readStore("theme");
+  if (saved) document.documentElement.dataset.theme = saved;
+  const button = $("#themeToggle");
+  if (!button) return;
+  updateThemeIcon(button);
+  button.addEventListener("click", () => toggleTheme(button));
+}
+
+function toggleTheme(button) {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  writeStore("theme", next);
+  updateThemeIcon(button);
+}
+
+function currentTheme() {
+  if (document.documentElement.dataset.theme) return document.documentElement.dataset.theme;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function updateThemeIcon(button) {
+  button.textContent = currentTheme() === "dark" ? "☀️" : "🌙";
+}
+
+function readStore(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function writeStore(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch (error) {
+    /* localStorage 不可でも動作は継続 */
+  }
+}
+
+function removeStore(key) {
+  try {
+    window.localStorage.removeItem(key);
+  } catch (error) {
+    /* localStorage 不可でも動作は継続 */
+  }
+}
+
 function renderWantList() {
   const list = $("#wantList");
   list.innerHTML = "";
@@ -350,15 +549,24 @@ function simpleItem(text) {
 }
 
 function init() {
+  initTheme();
   renderTabs();
   initInfoTabs();
   renderFacts();
   renderMemos();
-  renderSimpleList("#checkList", data.checkList);
-  renderSimpleList("#todoList", data.todoList);
+  renderEmergency();
+  initHotel();
+  initQuickbar();
+  renderCheckList("#checkList", data.checkList, "pack");
+  renderCheckList("#todoList", data.todoList, "prep");
   renderWantList();
   renderOpenTodos();
-  showDay(data.days[0].id);
+  showDay(tripTodayId() || data.days[0].id);
+  window.setInterval(refreshNow, 60000);
+}
+
+function refreshNow() {
+  if (currentDay) renderTimeline(currentDay.events);
 }
 
 init();
