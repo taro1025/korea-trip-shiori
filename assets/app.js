@@ -434,6 +434,8 @@ function initQuickbar() {
 }
 
 function openTodayRoute() {
+  const todayId = tripTodayId();
+  if (todayId && currentDay && currentDay.id !== todayId) showDay(todayId);
   const routes = $("#dayRoutes");
   if (!routes) return;
   routes.open = true;
