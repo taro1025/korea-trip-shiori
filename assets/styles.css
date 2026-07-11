@@ -224,6 +224,11 @@ a {
   line-height: 1.75;
 }
 
+.panel__lead {
+  color: var(--ink);
+  font-weight: 700;
+}
+
 .small {
   font-size: 0.92rem;
 }
