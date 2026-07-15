@@ -28,6 +28,8 @@ DMZツアーは7/18（土）予約済みで、朝7:30に弘大集合、現地で
 - タイムラインを移動・食事・施術・ケア・宿・観光でアイコンと色分け
 - 現地メモに緊急連絡先（112/119/1339/1330）をタップ発信できるチップを設置
 - 宿の住所コピーとNaverで開くボタンを概要タブに設置
+- 宿の詳細（住所・ドアパスワード・Wi-Fi・ハウスルール）は「宿🔒」タブに格納し、ID/PWを入力した人だけが閲覧できる非公開ページとして表示
+- 宿の詳細はAES-GCMで暗号化して埋め込み、正しいID/PWでのみ復号（平文パスワードは公開ページ・リポジトリに残さない）
 - 持ち物・事前準備はタップでチェックでき、localStorageに保存
 - 画面下部に「今日の経路／割り勘／緊急」の固定クイックバーを常時表示
 - 端末設定に追従し、ボタンでも切り替えられるダークモードに対応
@@ -48,6 +50,10 @@ python3 -m http.server 4173
 Naver Map経路は公式URLスキーム `nmap://route/...` と `places` の緯度経度を使い、現在地が日本でも現在地起点にはしません。
 AndroidではNaver Mapアプリを開きやすい `intent://` 形式に自動変換します。
 1日分の経路は、Naver Mapの経由地上限に合わせて必要に応じて分割します。
+
+宿の詳細（非公開ページ）は `assets/itinerary.js` の `lodging.cipher` に暗号文（base64）として保持しています。表示は `index.html` の「宿🔒」タブ（`#info-lodging`）、復号は `assets/app.js` の `decryptLodging` が担当します。
+ログインはGitHub Pages（静的ホスティング）ではサーバー側Basic認証が使えないため、`id:pw` を鍵素材にした PBKDF2 + AES-GCM のクライアント側復号で代替しています（id・pwの両方が正しい場合のみ復号可）。
+内容やID/PWを変更する場合は、平文HTMLをローカルで用意し、`id:pw` を passphrase として PBKDF2(SHA-256, 150000回, salt16B) で鍵を導出、AES-256-GCM(iv12B) で暗号化した `salt|iv|ciphertext|tag` をbase64化して `lodging.cipher` に差し替えます（現在の資格情報は id `korea` / pw `anma`）。
 
 未確定情報は `keyFacts` に `TODO` として表示しています。
 未消化Todoは `openTodos` を編集してください。

@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
-    <link rel="stylesheet" href="assets/styles.css?v=20260711-dmz" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260715-lodging" />
   </head>
   <body>
     <header class="hero" id="top">
@@ -84,6 +84,17 @@
               data-panel="info-overview"
             >
               概要
+            </button>
+            <button
+              class="info-tab"
+              id="info-tab-lodging"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="info-lodging"
+              data-panel="info-lodging"
+            >
+              宿🔒
             </button>
             <button
               class="info-tab"
@@ -194,6 +205,33 @@
 
           <article
             class="panel info-panel panel--wide"
+            id="info-lodging"
+            role="tabpanel"
+            aria-labelledby="info-tab-lodging"
+            hidden
+          >
+            <span class="panel__label">Private</span>
+            <h2>宿の詳細</h2>
+            <form class="lodging-auth" id="lodgingAuth" autocomplete="on">
+              <p class="lodging-auth__lead">
+                🔒 住所・ドアパスワード・Wi-Fiは非公開です。ID / PW を入力すると表示されます。
+              </p>
+              <label class="lodging-auth__field">
+                <span>ID</span>
+                <input type="text" id="lodgingId" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" />
+              </label>
+              <label class="lodging-auth__field">
+                <span>PW</span>
+                <input type="password" id="lodgingPw" name="password" autocomplete="current-password" />
+              </label>
+              <button type="submit" class="chip-button chip-button--go">表示する</button>
+              <p class="lodging-auth__error" id="lodgingError" role="alert" hidden>ID または PW が違います。</p>
+            </form>
+            <div class="lodging-content" id="lodgingContent" hidden></div>
+          </article>
+
+          <article
+            class="panel info-panel panel--wide"
             id="info-facts"
             role="tabpanel"
             aria-labelledby="info-tab-facts"
@@ -274,7 +312,7 @@
       <a href="https://walica.jp/group/01KW0VW6YE56PYZDWR7VTVYTQ8" target="_blank" rel="noopener noreferrer">ワリカ</a>
     </footer>
 
-    <script src="assets/itinerary.js?v=20260711-dmz" defer></script>
-    <script src="assets/app.js?v=20260711-dmz" defer></script>
+    <script src="assets/itinerary.js?v=20260715-lodging" defer></script>
+    <script src="assets/app.js?v=20260715-lodging" defer></script>
   </body>
 </html>

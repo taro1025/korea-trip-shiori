@@ -428,6 +428,44 @@ function flashButton(button, label, message) {
   setTimeout(() => (button.textContent = label), 1500);
 }
 
+function initLodging() {
+  const form = $("#lodgingAuth");
+  if (!form || !data.lodging) return;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    unlockLodging();
+  });
+}
+
+async function unlockLodging() {
+  const id = $("#lodgingId").value.trim();
+  const pw = $("#lodgingPw").value;
+  try {
+    revealLodging(await decryptLodging(`${id}:${pw}`));
+  } catch (error) {
+    $("#lodgingError").hidden = false;
+  }
+}
+
+function revealLodging(html) {
+  $("#lodgingContent").innerHTML = html;
+  $("#lodgingContent").hidden = false;
+  $("#lodgingAuth").hidden = true;
+}
+
+async function decryptLodging(passphrase) {
+  const raw = Uint8Array.from(atob(data.lodging.cipher), (ch) => ch.charCodeAt(0));
+  const key = await lodgingKey(passphrase, raw.slice(0, 16));
+  const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: raw.slice(16, 28) }, key, raw.slice(28));
+  return new TextDecoder().decode(plain);
+}
+
+async function lodgingKey(passphrase, salt) {
+  const material = await crypto.subtle.importKey("raw", new TextEncoder().encode(passphrase), "PBKDF2", false, ["deriveKey"]);
+  const params = { name: "PBKDF2", salt, iterations: data.lodging.iterations, hash: "SHA-256" };
+  return crypto.subtle.deriveKey(params, material, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+}
+
 function initQuickbar() {
   const route = $("#qbRoute");
   if (route) route.addEventListener("click", openTodayRoute);
@@ -558,6 +596,7 @@ function init() {
   renderMemos();
   renderEmergency();
   initHotel();
+  initLodging();
   initQuickbar();
   renderCheckList("#checkList", data.checkList, "pack");
   renderCheckList("#todoList", data.todoList, "prep");

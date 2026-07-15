@@ -897,6 +897,138 @@ a {
   text-decoration: line-through;
 }
 
+.lodging-auth {
+  display: grid;
+  gap: 12px;
+  max-width: 420px;
+  margin-top: 18px;
+}
+
+.lodging-auth__lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.lodging-auth__field {
+  display: grid;
+  gap: 6px;
+}
+
+.lodging-auth__field span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.lodging-auth__field input {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  padding: 0.6rem 0.75rem;
+  color: var(--ink);
+  font: inherit;
+}
+
+.lodging-auth__field input:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 1px;
+}
+
+.lodging-auth button {
+  justify-self: start;
+}
+
+.lodging-auth__error {
+  margin: 0;
+  color: var(--red-dark);
+  font-weight: 800;
+}
+
+.lodging-auth__error[hidden] {
+  display: none;
+}
+
+.lodging-content[hidden] {
+  display: none;
+}
+
+.lodging__hint {
+  margin: 18px 0 0;
+  border: 1px solid var(--teal);
+  border-radius: 8px;
+  background: var(--teal-soft);
+  padding: 0.7rem 0.85rem;
+  color: var(--teal-ink);
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.lodging__block {
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.lodging__block h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.15rem;
+}
+
+.lodging__block p {
+  margin: 0.55rem 0 0;
+  color: var(--ink);
+  line-height: 1.75;
+}
+
+.lodging__block ul {
+  margin: 0.7rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--ink);
+  line-height: 1.75;
+}
+
+.lodging__block li {
+  margin-top: 0.35rem;
+}
+
+.lodging__block hr {
+  margin: 0.9rem 0;
+  border: none;
+  border-top: 1px dashed var(--line);
+}
+
+.lodging__pw {
+  display: inline-flex;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  padding: 0.4rem 0.7rem;
+  color: var(--red-dark);
+  font-weight: 950;
+  letter-spacing: 0.02em;
+}
+
+.lodging__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.lodging__links a {
+  color: var(--teal-ink);
+  font-weight: 850;
+}
+
+.lodging__block--warn p {
+  border-left: 4px solid var(--red);
+  padding-left: 10px;
+  color: var(--red-dark);
+  font-weight: 800;
+}
+
 .quickbar {
   position: fixed;
   bottom: calc(10px + env(safe-area-inset-bottom, 0px));
