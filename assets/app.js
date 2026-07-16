@@ -414,7 +414,7 @@ function initHotel() {
   const address = $("#hotelAddress");
   const map = $("#hotelMap");
   const copy = $("#copyHotel");
-  if (map) map.href = `https://map.naver.com/p/search/${encode("서강로13길 13")}`;
+  if (map) map.href = `https://map.naver.com/p/search/${encode("서강로9길 30")}`;
   if (copy && address) copy.addEventListener("click", () => copyText(address.textContent.trim(), copy));
 }
 
